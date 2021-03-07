@@ -1,0 +1,24 @@
+.card {
+    margin-bottom: 20px;
+}
+
+.paginate {
+    text-align: center;
+}
+.page {
+    display: inline-block;
+}
+.blue {
+    color: blue;
+}
+.red {
+    color: red;
+}
+.green {
+    color: greenyellow;
+}
+.footer {
+    text-align: center;
+    opacity: 0.7;
+    /* font-size: smaller; */
+}
