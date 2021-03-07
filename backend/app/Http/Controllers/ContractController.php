@@ -105,13 +105,24 @@ class ContractController extends Controller
     public function search(Request $request)
     {
         $query = Contract::query();
+        $search = $request->input('search');
+        $contract_type = $request->input('contract_type');
 
         if ($request->filled('contract_type')) {
-            $query->where('contract_type', $request->input('contract_type'));
+            $query->where(function ($query) use ($contract_type) {
+                $query->where('contract_type', $contract_type);
+            });
+        }
+
+        if ($request->filled('search')) {
+            $query
+                ->whereHas('customer', function ($query) use ($search) {
+                    $query->where('name', 'like', '%' . $search . '%');
+                });
         }
 
         $contracts = $query
-            ->orderby('created_at', 'desc')
+            ->latest()
             ->paginate(10);
 
         return view('contracts.index')->with([

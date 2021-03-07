@@ -10,23 +10,25 @@
     </h4>
 
     <form action="{{ action('ContractController@search') }}" method="get">
-        <div class="input-group mb-3">
+        <div class="input-group mb-3 col-md-6">
+            <input type="text" class="form-control" placeholder="内容を検索" name="search" aria-label="Recipient's username" aria-describedby="button-addon2" value="{{$request->input('search')}}">
             <select class="form-select col-md-4" name="contract_type" id="inputGroupSelect04" aria-label="Example select with button addon">
-                {{-- <option value="" {{ !$request->filled('contract_type') ? 'selected' : ''}}>-</option> --}}
+                <option value="" {{ !$request->filled('contract_type') ? 'selected' : ''}}>-</option>
                 <option value="2"
-                    {{ $request->input('contract_type') == '2' ? 'selected' : ''}}>
-                    普通預金
+                {{ $request->input('contract_type') == '2' ? 'selected' : ''}}>
+                普通預金
                 </option>
                 <option value="3"
-                    {{ $request->input('contract_type') == '3' ? 'selected' : ''}}>
-                    定期預金
+                {{ $request->input('contract_type') == '3' ? 'selected' : ''}}>
+                定期預金
                 </option>
                 <option value="4"
-                    {{ $request->input('contract_type') == '4' ? 'selected' : ''}}>
-                    融資
+                {{ $request->input('contract_type') == '4' ? 'selected' : ''}}>
+                融資
                 </option>
             </select>
             <button class="btn btn-outline-primary" type="submit" id="button-addon2">検索</button>
+            <a href="{{ url('/contracts') }}" type='button' class="btn btn-outline-secondary">リセット</a>
         </div>
     </form>
 
