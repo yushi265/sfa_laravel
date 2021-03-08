@@ -50,7 +50,7 @@ class ProgressController extends Controller
         $progress = new Progress();
         $progress->user_id = Auth::id();
         $progress->customer_id = $request->customer_id;
-        $progress->status = $request->status;
+        $progress->status_id = $request->status_id;
         $progress->body = $request->body;
         $progress->save();
         return redirect('/progresses');
@@ -87,7 +87,7 @@ class ProgressController extends Controller
      */
     public function update(ProgressRequest $request, Progress $progress)
     {
-        $progress->status = $request->status;
+        $progress->status_id = $request->status_id;
         $progress->body = $request->body;
         $progress->save();
         return redirect('/progresses');
@@ -113,7 +113,7 @@ class ProgressController extends Controller
 
         if ($request->filled('status')) {
             $query->where(function ($query) use ($status) {
-                    $query->where('status', $status );
+                    $query->where('status_id', $status );
             });
         }
 

@@ -44,7 +44,7 @@ class ContractController extends Controller
         $contract = new Contract();
         $contract->user_id = Auth::id();
         $contract->customer_id = $request->customer_id;
-        $contract->contract_type = $request->contract_type;
+        $contract->contract_type_id = $request->contract_type_id;
         $contract->amount = $request->amount;
         $contract->due_date = $request->due_date;
         $contract->save();
@@ -83,7 +83,7 @@ class ContractController extends Controller
      */
     public function update(ContractRequest $request, Contract $contract)
     {
-        $contract->contract_type = $request->contract_type;
+        $contract->contract_type_id = $request->contract_type_id;
         $contract->amount = $request->amount;
         $contract->due_date = $request->due_date;
         $contract->save();
@@ -106,11 +106,11 @@ class ContractController extends Controller
     {
         $query = Contract::query();
         $search = $request->input('search');
-        $contract_type = $request->input('contract_type');
+        $contract_type_id = $request->input('contract_type_id');
 
-        if ($request->filled('contract_type')) {
-            $query->where(function ($query) use ($contract_type) {
-                $query->where('contract_type', $contract_type);
+        if ($request->filled('contract_type_id')) {
+            $query->where(function ($query) use ($contract_type_id) {
+                $query->where('contract_type_id', $contract_type_id);
             });
         }
 

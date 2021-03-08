@@ -19,6 +19,11 @@ class Customer extends Model
         return $this->hasMany('App\Contract');
     }
 
+    public function job()
+    {
+        return $this->hasOne('App\Job', 'job_id', 'job_id');
+    }
+
     /**
      * すべての顧客情報を取得
      * @return array $customers
@@ -91,11 +96,11 @@ class Customer extends Model
             $suggests[] = '大口預金先です。定期預金の満期管理に注意しましょう！';
         }
         // 融資
-        if ($customer->job == "学生") {
+        if ($customer->job_id == 4) {
             $suggests[] = '学生です。奨学ローンが必要な可能性があります。ご親族にお会いしたら提案してみましょう！';
         }
         if ($deposit_status['loan'] > 500000) {
-            if ($customer->job == "自営業") {
+            if ($customer->job_id == 3) {
                 $suggests[] = '融資先です。業況を確認して、積極的に支援しましょう！';
             } else {
                 $suggests[] = '融資があります。';
@@ -106,7 +111,7 @@ class Customer extends Model
 
         $has_student = false;
         foreach ($family_members as $member) {
-            if ($member->job == '学生') {
+            if ($member->job_id == 4) {
                 $has_student = true;
                 break;
             }
@@ -114,7 +119,7 @@ class Customer extends Model
         if ($has_student) {
             $suggests[] = '家族に学生がいます。奨学ローンを提案してみましょう。';
         }
-        
+
         return $suggests;
     }
 }

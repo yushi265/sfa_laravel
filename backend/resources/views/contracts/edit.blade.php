@@ -12,24 +12,24 @@
             </div>
             <div class="col-md-4">
                 <div class="form-floating mb-3">
-                    <select class="form-select" name="contract_type" id="contract_type" aria-label="Floating label select example">
+                    <select class="form-select" name="contract_type_id" id="contract_type_id" aria-label="Floating label select example">
                         <option value="02"
-                            @if (old('contract_type', $contract->contract_type) == '2')
+                            @if (old('contract_type_id', $contract->contract_type_id) == '2')
                                 selected
                             @endif>普通預金
                         </option>
                         <option value="03"
-                            @if (old('contract_type', $contract->contract_type) == '3')
+                            @if (old('contract_type_id', $contract->contract_type_id) == '3')
                                 selected
                             @endif>定期預金
                         </option>
                         <option value="04"
-                            @if (old('contract_type', $contract->contract_type) == '4')
+                            @if (old('contract_type_id', $contract->contract_type_id) == '4')
                                 selected
                             @endif>融資
                         </option>
                     </select>
-                    <label for="contract_type">成約種類</label>
+                    <label for="contract_type_id">成約種類</label>
                 </div>
             </div>
             <div class="col-md">

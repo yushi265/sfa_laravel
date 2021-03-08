@@ -25,7 +25,7 @@ class ProgressRequest extends FormRequest
     {
         return [
             'customer_id' => 'required',
-            'status' => 'required',
+            'status_id' => 'required',
             'body' => 'required|max:255'
         ];
     }

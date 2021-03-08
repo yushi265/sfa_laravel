@@ -33,7 +33,7 @@ class CustomerController extends Controller
         $customer->birth = $request->birth;
         $customer->tel = $request->tel;
         $customer->address = $request->address;
-        $customer->job = $request->job;
+        $customer->job_id = $request->job_id;
         if(isset($request->mail))
         {
             $customer->mail = $request->mail;
@@ -48,6 +48,8 @@ class CustomerController extends Controller
 
     public function show(Customer $customer)
     {
+
+        // ddd($customer->job);
         $customer->age = Customer::getAge($customer->birth);
         $deposit_status = Contract::getDepositStatus($customer->id);
 
@@ -83,7 +85,7 @@ class CustomerController extends Controller
         $customer->tel = $request->tel;
         $customer->address = $request->address;
         $customer->mail = $request->mail;
-        $customer->job = $request->job;
+        $customer->job_id = $request->job_id;
         $customer->company = $request->company;
         $customer->save();
         return redirect()->action('CustomerController@show', $customer);
@@ -101,7 +103,7 @@ class CustomerController extends Controller
             ->orWhere('gender', 'like', '%' . $search . '%')
             ->orWhere('tel', 'like', '%' . $search . '%')
             ->orWhere('address', 'like', '%' . $search . '%')
-            ->orWhere('job', 'like', '%' . $search . '%')
+            // ->orWhere('job_id', 'like', '%' . $search . '%')
             ->orWhere('company', 'like', '%' . $search . '%')
             ->paginate(10);
 

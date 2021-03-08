@@ -30,7 +30,7 @@ class CustomerRequest extends FormRequest
             'tel' => 'required|integer|digits_between:1,11',
             'address' => 'required',
             'mail' => '',
-            'job' => 'required',
+            'job_id' => 'required',
         ];
     }
 

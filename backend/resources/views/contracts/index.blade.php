@@ -12,18 +12,18 @@
     <form action="{{ action('ContractController@search') }}" method="get">
         <div class="input-group mb-3 col-md-6">
             <input type="text" class="form-control" placeholder="内容を検索" name="search" aria-label="Recipient's username" aria-describedby="button-addon2" value="{{$request->input('search')}}">
-            <select class="form-select col-md-4" name="contract_type" id="inputGroupSelect04" aria-label="Example select with button addon">
-                <option value="" {{ !$request->filled('contract_type') ? 'selected' : ''}}>-</option>
+            <select class="form-select col-md-4" name="contract_type_id" id="inputGroupSelect04" aria-label="Example select with button addon">
+                <option value="" {{ !$request->filled('contract_type_id') ? 'selected' : ''}}>-</option>
                 <option value="2"
-                {{ $request->input('contract_type') == '2' ? 'selected' : ''}}>
+                {{ $request->input('contract_type_id') == '2' ? 'selected' : ''}}>
                 普通預金
                 </option>
                 <option value="3"
-                {{ $request->input('contract_type') == '3' ? 'selected' : ''}}>
+                {{ $request->input('contract_type_id') == '3' ? 'selected' : ''}}>
                 定期預金
                 </option>
                 <option value="4"
-                {{ $request->input('contract_type') == '4' ? 'selected' : ''}}>
+                {{ $request->input('contract_type_id') == '4' ? 'selected' : ''}}>
                 融資
                 </option>
             </select>
@@ -45,28 +45,16 @@
                 <tbody>
                     <tr>
                         <th scope="row" class="text-center">成約種類</th>
-                        <td>
-                            @switch($contract->contract_type)
-                            @case(2)
-                            普通預金
-                            @break
-                            @case(3)
-                            定期預金
-                            @break
-                            @case(4)
-                            融資
-                            @break
-                            @endswitch
-                        </td>
+                        <td>{{ $contract->contract_type->name }}</td>
                     </tr>
                     <tr>
                         <th scope="row" class="text-center">金額</th>
                         <td>￥{{number_format($contract->amount)}}</td>
                     </tr>
-                    @if ($contract->contract_type !== 2)
+                    @if ($contract->contract_type_id !== 2)
                     <tr>
                         <th scope="row" class="text-center">満期日</th>
-                        <td>{{$contract->due_date}}</td>
+                        <td>{!! str_replace('-', '/', $contract->due_date) !!}</td>
                     </tr>
                     @endif
                 </tbody>

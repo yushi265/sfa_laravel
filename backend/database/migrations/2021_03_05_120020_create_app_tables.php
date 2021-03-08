@@ -13,6 +13,28 @@ class CreateAppTables extends Migration
      */
     public function up()
     {
+        Schema::create('jobs', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->unsignedBigInteger('job_id')->unique();
+            $table->string('name');
+            $table->timestamps();
+        });
+
+        Schema::create('statuses', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->unsignedBigInteger('status_id')->unique();
+            $table->string('name');
+            $table->timestamps();
+        });
+
+        Schema::create('contract_types', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->unsignedBigInteger('contract_type_id')->unique();
+            $table->string('name');
+            $table->timestamps();
+        });
+
+
         Schema::create('customers', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');
@@ -22,18 +44,25 @@ class CreateAppTables extends Migration
             $table->unsignedBigInteger('tel');
             $table->string('address');
             $table->string('mail')->nullable();
-            $table->string('job');
+            $table->unsignedBigInteger('job_id');
             $table->string('company')->nullable();
             $table->timestamps();
+
+            $table->foreign('job_id')->references('job_id')->on('jobs');
         });
 
         Schema::create('progresses', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('customer_id');
-            $table->tinyInteger('status');
+            $table->unsignedBigInteger('status_id');
             $table->text('body');
             $table->timestamps();
+
+            $table
+                ->foreign('status_id')
+                ->references('status_id')
+                ->on('statuses');
             // ユーザーIDを紐づけ
             $table
                 ->foreign('user_id')
@@ -52,10 +81,15 @@ class CreateAppTables extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('customer_id');
-            $table->bigInteger('contract_type');
+            $table->unsignedBigInteger('contract_type_id');
             $table->bigInteger('amount');
             $table->date('due_date')->nullable();
             $table->timestamps();
+
+            $table
+                ->foreign('contract_type_id')
+                ->references('contract_type_id')
+                ->on('contract_types');
         });
     }
 
@@ -69,5 +103,8 @@ class CreateAppTables extends Migration
         Schema::dropIfExists('contracts');
         Schema::dropIfExists('progresses');
         Schema::dropIfExists('customers');
+        Schema::dropIfExists('jobs');
+        Schema::dropIfExists('statuses');
+        Schema::dropIfExists('contract_types');
     }
 }

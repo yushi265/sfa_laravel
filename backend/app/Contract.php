@@ -18,6 +18,11 @@ class Contract extends Model
         return $this->belongsTo('App\Customer');
     }
 
+    public function contract_type()
+    {
+        return $this->hasOne('App\Contract_type', 'contract_type_id', 'contract_type_id');
+    }
+
     /**
      * 預金種別合計を取得
      * @param int $id
@@ -26,9 +31,9 @@ class Contract extends Model
     public static function getDepositStatus($id)
     {
         $status = [];
-        $status['ordinary'] = self::where('customer_id', $id)->where('contract_type', 2)->sum('amount');
-        $status['time'] = self::where('customer_id', $id)->where('contract_type', 3)->sum('amount');
-        $status['loan'] = self::where('customer_id', $id)->where('contract_type', 4)->sum('amount');
+        $status['ordinary'] = self::where('customer_id', $id)->where('contract_type_id', 2)->sum('amount');
+        $status['time'] = self::where('customer_id', $id)->where('contract_type_id', 6)->sum('amount');
+        $status['loan'] = self::where('customer_id', $id)->where('contract_type_id', 9)->sum('amount');
 
         return $status;
     }

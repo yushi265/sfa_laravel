@@ -45,7 +45,7 @@
                     </tr>
                     <tr>
                         <th scope="row" class="text-center">職業</th>
-                        <td>{{ $customer->job}}</td>
+                        <td>{{ $customer->job->name}}</td>
                     </tr>
                     <tr>
                         <th scope="row" class="text-center">勤務先</th>
@@ -123,7 +123,7 @@
                     </td>
                     <td class="text-center">{{ $member->age }}</td>
                     <td class="text-center">{!! str_replace('-', '/', $customer->birth) !!}</td>
-                    <td>{{ $member->job }}</td>
+                    <td>{{ $member->job->name }}</td>
                     <td>{{ $member->company }}</td>
                 </tr>
             @empty
@@ -152,7 +152,7 @@
                     <tr>
                         <th scope="row" class="text-center">状態</th>
                         <td>
-                            @switch($progress->status)
+                            @switch($progress->status_id)
                                 @case(1)
                                     有効情報
                                     @break

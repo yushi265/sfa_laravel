@@ -75,34 +75,34 @@
             <div class="row g-2">
                 <div class="col-md-4">
                     <div class="form-floating">
-                        <select class="form-select" name="job" id="job" aria-label="Floating label select example">
+                        <select class="form-select" name="job_id" id="job_id" aria-label="Floating label select example">
                             <option value="会社員"
-                                @if (old('job', $customer->job) == '会社員')
+                                @if (old('job_id', $customer->job_id) == '会社員')
                                     selected
                                 @endif>会社員
                             </option>
                             <option value="会社役員"
-                                @if (old('job', $customer->job) == '会社役員')
+                                @if (old('job_id', $customer->job_id) == '会社役員')
                                     selected
                                 @endif>会社役員
                             </option>
                             <option value="自営業"
-                                @if (old('job', $customer->job) == '自営業')
+                                @if (old('job_id', $customer->job_id) == '自営業')
                                     selected
                                 @endif>自営業
                             </option>
                             <option value="学生"
-                                @if (old('job', $customer->job) == '学生')
+                                @if (old('job_id', $customer->job_id) == '学生')
                                     selected
                                 @endif>学生
                             </option>
                             <option value="無職/退職された方"
-                                @if (old('job', $customer->job) == '無職/退職された方')
+                                @if (old('job_id', $customer->job_id) == '無職/退職された方')
                                     selected
                                 @endif>無職/退職された方
                             </option>
                         </select>
-                        <label for="job">職業</label>
+                        <label for="job_id">職業</label>
                     </div>
                 </div>
                 <div class="col-md-8">

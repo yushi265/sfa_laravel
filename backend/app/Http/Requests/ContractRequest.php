@@ -25,7 +25,7 @@ class ContractRequest extends FormRequest
     {
         return [
             'customer_id' => 'required',
-            'contract_type' => 'required',
+            'contract_type_id' => 'required',
             'amount' => 'required|integer|digits_between:1,20',
         ];
     }
