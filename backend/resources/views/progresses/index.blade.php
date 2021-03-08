@@ -13,18 +13,11 @@
             <input type="text" class="form-control" placeholder="内容を検索" name="search" aria-label="Recipient's username" aria-describedby="button-addon2" value="{{$request->input('search')}}">
             <select class="form-select col-md-3" name="status" id="inputGroupSelect04" aria-label="Example select with button addon">
                 <option value="">状態</option>
-                <option value="5"
-                    {{ $request->input('status') == '5' ? 'selected' : ''}}>
-                    進捗
-                </option>
-                <option value="1"
-                    {{ $request->input('status') == '1' ? 'selected' : ''}}>
-                    有効情報
-                </option>
-                <option value="9"
-                    {{ $request->input('status') == '9' ? 'selected' : ''}}>
-                    契約成立
-                </option>
+                @foreach ($statuses as $status)
+                    <option value="{{ $status->status_id }}" @if ($request->status == $status->status_id) selected @endif>
+                        {{ $status->name }}
+                    </option>
+                @endforeach
             </select>
             <button class="btn btn-outline-primary" type="submit" id="button-addon2">検索</button>
             <a href="{{ url('/progresses') }}" type='button' class="btn btn-outline-secondary">リセット</a>
@@ -63,10 +56,6 @@
                     @method('delete')
                     <button class="btn btn-outline-danger" type="submit" value="{{ $progress->id }}" role="button">削除</button>
                 </form>
-            {{-- @elsecan('user-higher')
-                @if ($progress->user->id === $auth->id)
-                    <a class="btn btn-outline-success" href="#" role="button">編集</a>
-                @endif --}}
             @endcan
         </div>
     </div>

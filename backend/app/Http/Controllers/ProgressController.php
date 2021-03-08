@@ -106,6 +106,8 @@ class ProgressController extends Controller
 
     public function search(Request $request)
     {
+        $statuses = Status::all();
+
         $query = Progress::query();
         $search = $request->input('search');
         $status = $request->input('status');
@@ -132,6 +134,7 @@ class ProgressController extends Controller
         return view('progresses.index')->with([
             'progresses' => $progresses,
             'request' => $request,
+            'statuses' => $statuses,
         ]);
     }
 }

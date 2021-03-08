@@ -107,6 +107,8 @@ class ContractController extends Controller
 
     public function search(Request $request)
     {
+        $contract_types = Contract_type::all();
+
         $query = Contract::query();
         $search = $request->input('search');
         $contract_type_id = $request->input('contract_type_id');
@@ -132,6 +134,7 @@ class ContractController extends Controller
         return view('contracts.index')->with([
             'contracts' => $contracts,
             'request' => $request,
+            'contract_types' => $contract_types,
         ]);
     }
 }
