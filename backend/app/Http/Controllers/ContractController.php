@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Customer;
 use App\Progress;
 use App\Contract;
+use App\Contract_type;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\ContractRequest;
 
@@ -30,7 +31,8 @@ class ContractController extends Controller
     public function create()
     {
         $customers = Customer::all();
-        return view('contracts.create')->with('customers', $customers);
+        $contract_types = Contract_type::all();
+        return view('contracts.create')->with(['customers' => $customers, 'contract_types' => $contract_types]);
     }
 
     /**
@@ -71,7 +73,8 @@ class ContractController extends Controller
      */
     public function edit(Contract $contract)
     {
-        return view('contracts.edit')->with('contract', $contract);
+        $contract_types = Contract_type::all();
+        return view('contracts.edit')->with(['contract' => $contract, 'contract_types' => $contract_types]);
     }
 
     /**

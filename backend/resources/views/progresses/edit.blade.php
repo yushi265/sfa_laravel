@@ -14,22 +14,14 @@
             </div>
             <div class="col-md-4">
                 <div class="form-floating mb-3">
-                    <select class="form-select" name="status" id="status" aria-label="Floating label select example" required>
-                        <option value="5"
-                            @if (old('status', $progress->status == '5'))
-                                selected
-                            @endif>進捗
-                        </option>
-                        <option value="1"
-                            @if (old('status', $progress->status == '1'))
-                                selected
-                            @endif>有効情報
-                        </option>
-                        <option value="9"
-                            @if (old('status', $progress->status == '9'))
-                                selected
-                            @endif>契約成立
-                        </option>
+                    <select class="form-select" name="status_id" id="status_id" aria-label="Floating label select example" required>
+                        @foreach ($statuses as $status)
+                            <option value={{ $status->status_id}}
+                                @if (old('status_id', $progress->status_id == $status->status_id))
+                                    selected
+                                @endif>{{ $status->name }}
+                            </option>
+                        @endforeach
                     </select>
                     <label for="status">状態</label>
                 </div>

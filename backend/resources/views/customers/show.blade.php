@@ -11,16 +11,7 @@
                     <tr>
                         <th scope="row" class="text-center">性別</th>
                         <td class="">
-                            @switch($customer->gender)
-                            @case(1)
-                                男
-                                @break
-                            @case(2)
-                                女
-                                @break
-                            @default
-                                その他
-                        @endswitch
+                            {{ $customer->gender->name }}
                         </td>
                     </tr>
                     <tr>
@@ -110,16 +101,7 @@
                         <a href="{{ url('/customers', $member->id)}}">{{ $member->name }}</a>
                     </td>
                     <td class="text-center">
-                        @switch($member->gender)
-                            @case(1)
-                                男
-                                @break
-                            @case(2)
-                                女
-                                @break
-                            @default
-                                その他
-                        @endswitch
+                        {{ $member->gender->name}}
                     </td>
                     <td class="text-center">{{ $member->age }}</td>
                     <td class="text-center">{!! str_replace('-', '/', $customer->birth) !!}</td>

@@ -19,6 +19,11 @@ class Customer extends Model
         return $this->hasMany('App\Contract');
     }
 
+    public function gender()
+    {
+        return $this->hasOne('App\Gender', 'gender_id', 'gender_id');
+    }
+
     public function job()
     {
         return $this->hasOne('App\Job', 'job_id', 'job_id');

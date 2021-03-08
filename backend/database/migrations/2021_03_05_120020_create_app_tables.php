@@ -13,6 +13,13 @@ class CreateAppTables extends Migration
      */
     public function up()
     {
+        Schema::create('genders', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->unsignedBigInteger('gender_id')->unique();
+            $table->string('name');
+            $table->timestamps();
+        });
+
         Schema::create('jobs', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('job_id')->unique();
@@ -39,7 +46,7 @@ class CreateAppTables extends Migration
             $table->bigIncrements('id');
             $table->string('name');
             $table->string('ruby');
-            $table->tinyInteger('gender');
+            $table->unsignedBigInteger('gender_id');
             $table->date('birth');
             $table->unsignedBigInteger('tel');
             $table->string('address');
@@ -48,6 +55,7 @@ class CreateAppTables extends Migration
             $table->string('company')->nullable();
             $table->timestamps();
 
+            $table->foreign('gender_id')->references('gender_id')->on('genders');
             $table->foreign('job_id')->references('job_id')->on('jobs');
         });
 
@@ -106,5 +114,6 @@ class CreateAppTables extends Migration
         Schema::dropIfExists('jobs');
         Schema::dropIfExists('statuses');
         Schema::dropIfExists('contract_types');
+        Schema::dropIfExists('genders');
     }
 }

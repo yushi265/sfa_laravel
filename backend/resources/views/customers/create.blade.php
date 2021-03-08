@@ -23,13 +23,13 @@
             </div>
             <div class="col-md-3">
                 <div class="form-floating">
-                    <select class="form-select" name="gender" id="gender" aria-label="Floating label select example">
+                    <select class="form-select" name="gender_id" id="gender_id" aria-label="Floating label select example">
                         <option value="" selected>選んでください</option>
-                        <option value="1" @if(old('gender') == '1') selected  @endif>男</option>
-                        <option value="2" @if(old('gender') == '2') selected  @endif>女</option>
-                        <option value="3" @if(old('gender') == '3') selected  @endif>その他</option>
+                        @foreach ($genders as $gender)
+                            <option value="{{ $gender->gender_id }}" @if(old('gender_id') == $gender->gender_id) selected  @endif>{{ $gender->name }}</option>
+                        @endforeach
                     </select>
-                    <label for="gender">性別</label>
+                    <label for="gender_id">性別</label>
                 </div>
             </div>
 
@@ -74,11 +74,11 @@
                     <div class="form-floating">
                         <select class="form-select" name="job_id" id="job_id" aria-label="Floating label select example">
                             <option value="" selected>選んでください</option>
-                            <option value="1" @if(old('job_id') == '1') selected  @endif>会社員</option>
-                            <option value="2" @if(old('job_id') == '2') selected  @endif>会社役員</option>
-                            <option value="3" @if(old('job_id') == '3') selected  @endif>自営業</option>
-                            <option value="4" @if(old('job_id') == '4') selected  @endif>学生</option>
-                            <option value="5" @if(old('job_id') == '5') selected  @endif>無職/退職された方</option>
+                            @foreach ($jobs as $job)
+                                <option value="{{ $job->job_id }}" @if(old('job_id') == $job->job_id) selected  @endif>
+                                    {{ $job->name }}
+                                </option>
+                            @endforeach
                         </select>
                         <label for="job_id">職業</label>
                     </div>

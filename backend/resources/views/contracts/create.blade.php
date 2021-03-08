@@ -10,7 +10,7 @@
                     <select class="form-select" name="customer_id" id="customer_id" aria-label="Floating label select example">
                         <option value="" selected>選んでください</option>
                         @foreach ($customers as $customer)
-                            <option value="{{ $customer->id }}">{{ $customer->id }}:{{ $customer->name }}</option>
+                            <option value="{{ $customer->id }}" @if(old('customer_id') == $customer->id) selected @endif>{{ $customer->id }}:{{ $customer->name }}</option>
                         @endforeach
                     </select>
                     <label for="customer_id">顧客氏名</label>
@@ -20,9 +20,9 @@
                 <div class="form-floating mb-3">
                     <select class="form-select" name="contract_type_id" id="contract_type_id" aria-label="Floating label select example">
                         <option value="" selected>選んでください</option>
-                        <option value="02">普通預金</option>
-                        <option value="03">定期預金</option>
-                        <option value="04">融資</option>
+                        @foreach ($contract_types as $contract_type)
+                            <option value="{{ $contract_type->contract_type_id }}" @if(old('contract_type_id') == $contract_type->contract_type_id) selected @endif>{{ $contract_type->name }}</option>
+                        @endforeach
                     </select>
                     <label for="contract_type_id">成約種類</label>
                 </div>

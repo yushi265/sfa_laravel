@@ -7,6 +7,8 @@ use App\Http\Requests\CustomerRequest;
 use App\Customer;
 use App\Progress;
 use App\Contract;
+use App\Gender;
+use App\Job;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 
@@ -21,7 +23,10 @@ class CustomerController extends Controller
 
     public function create()
     {
-        return view('customers.create');
+        $genders = Gender::all();
+        $jobs = Job::all();
+        return view('customers.create')
+                ->with(['genders' => $genders, 'jobs' => $jobs]);
     }
 
     public function store(CustomerRequest $request)
@@ -29,7 +34,7 @@ class CustomerController extends Controller
         $customer = new Customer();
         $customer->name = $request->name;
         $customer->ruby = $request->ruby;
-        $customer->gender = $request->gender;
+        $customer->gender_id = $request->gender_id;
         $customer->birth = $request->birth;
         $customer->tel = $request->tel;
         $customer->address = $request->address;
@@ -48,8 +53,6 @@ class CustomerController extends Controller
 
     public function show(Customer $customer)
     {
-
-        // ddd($customer->job);
         $customer->age = Customer::getAge($customer->birth);
         $deposit_status = Contract::getDepositStatus($customer->id);
 
@@ -73,14 +76,16 @@ class CustomerController extends Controller
 
     public function edit(Customer $customer)
     {
-        return view('customers.edit')->with('customer', $customer);
+        $genders = Gender::all();
+        $jobs = Job::all();
+        return view('customers.edit')->with(['customer' => $customer, 'genders' => $genders, 'jobs' => $jobs]);
     }
 
     public function update(CustomerRequest $request, Customer $customer)
     {
         $customer->name = $request->name;
         $customer->ruby = $request->ruby;
-        $customer->gender = $request->gender;
+        $customer->gender_id = $request->gender_id;
         $customer->birth = $request->birth;
         $customer->tel = $request->tel;
         $customer->address = $request->address;
@@ -100,7 +105,7 @@ class CustomerController extends Controller
         $customers = $query
             ->where('name', 'like', '%' . $search . '%')
             ->orWhere('ruby', 'like', '%' . $search . '%')
-            ->orWhere('gender', 'like', '%' . $search . '%')
+            // ->orWhere('gender', 'like', '%' . $search . '%')
             ->orWhere('tel', 'like', '%' . $search . '%')
             ->orWhere('address', 'like', '%' . $search . '%')
             // ->orWhere('job_id', 'like', '%' . $search . '%')

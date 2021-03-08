@@ -35,7 +35,7 @@
                             <tr>
                                 <th scope="row" class="text-center">状態</th>
                                 <td>
-                                    @switch($progress->status)
+                                    @switch($progress->status_id)
                                         @case(1)
                                             有効情報
                                             @break
@@ -73,14 +73,14 @@
                             <tr>
                                 <th scope="row" class="text-center">成約種類</th>
                                 <td>
-                                    @switch($contract->contract_type)
+                                    @switch($contract->contract_type_id)
                                     @case(2)
                                     普通預金
                                     @break
-                                    @case(3)
+                                    @case(6)
                                     定期預金
                                     @break
-                                    @case(4)
+                                    @case(9)
                                     融資
                                     @break
                                     @endswitch
@@ -90,7 +90,7 @@
                                 <th scope="row" class="text-center">金額</th>
                                 <td>￥{{number_format($contract->amount)}}</td>
                             </tr>
-                            @if ($contract->contract_type !== 2)
+                            @if ($contract->contract_type_id !== 2)
                             <tr>
                                 <th scope="row" class="text-center">満期日</th>
                                 <td>{{$contract->due_date}}</td>

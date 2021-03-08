@@ -20,15 +20,11 @@
                 <div class="form-floating mb-3">
                     <select class="form-select" name="status_id" id="status_id" aria-label="Floating label select example">
                         <option value="" selected>-</option>
-                        <option value="5" @if(old('status_id') == '5') selected @endif>
-                            進捗
-                        </option>
-                        <option value="1" @if(old('status_id') == '1') selected @endif>
-                            有効情報
-                        </option>
-                        <option value="9" @if(old('status_id') == '9') selected @endif>
-                            契約成立
-                        </option>
+                        @foreach ($statuses as $status)
+                            <option value="{{ $status->status_id }}" @if(old('status_id') == $status->status_id) selected @endif>
+                                {{ $status->name }}
+                            </option>
+                        @endforeach
                     </select>
                     <label for="status_id">状態</label>
                 </div>

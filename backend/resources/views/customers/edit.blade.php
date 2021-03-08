@@ -21,22 +21,10 @@
             </div>
             <div class="col-md-3">
                 <div class="form-floating">
-                    <select class="form-select" name="gender" id="gender" aria-label="Floating label select example">
-                        <option value="1"
-                            @if (old('gender', $customer->gender) == '1')
-                                selected
-                            @endif>男
-                        </option>
-                        <option value="2"
-                            @if (old('gender', $customer->gender) == '2')
-                                selected
-                            @endif>女
-                        </option>
-                        <option value="3"
-                            @if (old('gender', $customer->gender) == '3')
-                                selected
-                            @endif>その他
-                        </option>
+                    <select class="form-select" name="gender_id" id="gender_id" aria-label="Floating label select example">
+                        @foreach ($genders as $gender)
+                            <option value="{{ $gender->gender_id }}" @if(old('gender_id', $customer->gender_id) == $gender->gender_id) selected  @endif>{{ $gender->name }}</option>
+                        @endforeach
                     </select>
                     <label for="gender">性別</label>
                 </div>
@@ -76,31 +64,13 @@
                 <div class="col-md-4">
                     <div class="form-floating">
                         <select class="form-select" name="job_id" id="job_id" aria-label="Floating label select example">
-                            <option value="会社員"
-                                @if (old('job_id', $customer->job_id) == '会社員')
+                            @foreach ($jobs as $job)
+                                <option value="{{ $job->job_id }}"
+                                @if (old('job_id', $customer->job_id) == $job->job_id)
                                     selected
-                                @endif>会社員
-                            </option>
-                            <option value="会社役員"
-                                @if (old('job_id', $customer->job_id) == '会社役員')
-                                    selected
-                                @endif>会社役員
-                            </option>
-                            <option value="自営業"
-                                @if (old('job_id', $customer->job_id) == '自営業')
-                                    selected
-                                @endif>自営業
-                            </option>
-                            <option value="学生"
-                                @if (old('job_id', $customer->job_id) == '学生')
-                                    selected
-                                @endif>学生
-                            </option>
-                            <option value="無職/退職された方"
-                                @if (old('job_id', $customer->job_id) == '無職/退職された方')
-                                    selected
-                                @endif>無職/退職された方
-                            </option>
+                                @endif>{{ $job->name }}
+                                </option>
+                            @endforeach
                         </select>
                         <label for="job_id">職業</label>
                     </div>
