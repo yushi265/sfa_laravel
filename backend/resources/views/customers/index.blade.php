@@ -8,9 +8,9 @@
 
     <form action="{{ url('/customers' )}}" method="get">
         <div class="input-group mb-3 col-md-6">
-            <input type="text" class="form-control" placeholder="キーワードを入力してください" name="search" aria-label="Recipient's username" aria-describedby="button-addon2" value="{{$search}}">
+            <input type="text" class="form-control" placeholder="キーワードを入力してください" name="search" aria-label="Recipient's username" aria-describedby="button-addon2" value="{{$request->search}}">
             <button class="btn btn-outline-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-                詳細設定
+                詳細条件
             </button>
             <button class="btn btn-outline-primary" type="submit" id="button-addon2">検索</button>
             <a href="{{ url('/customers') }}" type='button' class="btn btn-outline-secondary">リセット</a>
@@ -18,28 +18,32 @@
         <div class="collapse col-md-6" id="collapseExample">
             <div class="card card-body">
                 <div class="input-group mb-3">
-                    <label class="input-group-text" for="inputGroupSelect01">性別</label>
-                    <select class="form-select" id="inputGroupSelect01">
-                        <option selected>指定しない</option>
-                        <option value="1">One</option>
-                        <option value="2">Two</option>
-                        <option value="3">Three</option>
+                    <label class="input-group-text" for="gender_opt">性別</label>
+                    <select class="form-select" name="gender_opt" id="gender_opt">
+                        <option value="" selected>指定しない</option>
+                        @foreach ($genders as $gender)
+                            <option value="{{ $gender->gender_id }}" @if ($request->gender_opt == $gender->gender_id) selected @endif>
+                                {{ $gender->name }}
+                            </option>
+                        @endforeach
                     </select>
                 </div>
                 <div class="input-group mb-3">
-                    <label class="input-group-text" for="inputGroupSelect01">職業</label>
-                    <select class="form-select" id="inputGroupSelect01">
-                        <option selected>指定しない</option>
-                        <option value="1">One</option>
-                        <option value="2">Two</option>
-                        <option value="3">Three</option>
+                    <label class="input-group-text" for="job_opt">職業</label>
+                    <select class="form-select" name="job_opt" id="job_opt">
+                        <option value="">指定しない</option>
+                        @foreach ($jobs as $job)
+                            <option value="{{ $job->job_id }}" @if ($request->job_opt == $job->job_id) selected @endif>
+                                {{ $job->name }}
+                            </option>
+                        @endforeach
                     </select>
                 </div>
                 <div class="input-group mb-3">
                     <span class="input-group-text">年齢</span>
-                    <input type="text" aria-label="First name" class="form-control">
+                    <input type="text" name="min-age" aria-label="First name" class="form-control">
                     <span class="input-group-text">〜</span>
-                    <input type="text" aria-label="Last name" class="form-control">
+                    <input type="text" name="max-age" aria-label="Last name" class="form-control">
                 </div>
                 <button class="btn btn-outline-primary" type="submit" id="button-addon2">検索</button>
             </div>

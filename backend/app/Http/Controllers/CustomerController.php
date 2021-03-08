@@ -109,24 +109,42 @@ class CustomerController extends Controller
 
     public function search(Request $request)
     {
-        $search = $request->search;
-        $query = Customer::query();
-        $customers = $query
-            ->where('name', 'like', '%' . $search . '%')
-            ->orWhere('ruby', 'like', '%' . $search . '%')
-            ->orWhere('tel', $search)
-            ->orWhere('address', 'like', '%' . $search . '%')
-            ->orWhere('company', 'like', '%' . $search . '%')
-            ->with('gender')
-            ->paginate(10);
+        $genders = Gender::all();
+        $jobs = Job::all();
 
-        // $customers->load('gender');
+        $search = $request->search;
+        $gender_opt = $request->gender_opt;
+        $job_opt = $request->job_opt;
+
+        // ddd($job_opt);
+        $query = Customer::query();
+
+        if ($request->filled('gender_opt')) {
+            $query->where('gender_id', $gender_opt);
+        };
+
+        if ($request->filled('job_opt')) {
+            $query->where('job_id', $job_opt);
+        };
+
+        $query->where(function ($query) use ($search) {
+            $query
+                ->where('name', 'like', '%' . $search . '%')
+                ->orWhere('ruby', 'like', '%' . $search . '%')
+                ->orWhere('tel', $search)
+                ->orWhere('address', 'like', '%' . $search . '%')
+                ->orWhere('company', 'like', '%' . $search . '%');
+        });
+
+        $customers = $query->with('gender')->paginate(10);
 
         $customers = Customer::setAllCustomersAge($customers);
 
         return view('customers.index')->with([
             'customers' => $customers,
-            'search' => $search,
+            'request' => $request,
+            'genders' => $genders,
+            'jobs' => $jobs
         ]);
     }
 
