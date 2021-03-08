@@ -89,6 +89,51 @@
         </tbody>
     </table>
 
+    <h4>世帯構成</h4>
+    <table class="table table-bordered">
+        <tbody>
+            <tr>
+                <th scope="col" class="text-center col-1">ID</th>
+                <th scope="col" class="text-center col-2">名前</th>
+                <th scope="col" class="text-center col-1">性別</th>
+                <th scope="col" class="text-center col-1">年齢</th>
+                <th scope="col" class="text-center col-2">生年月日</th>
+                <th scope="col" class="text-center col-2">職業</th>
+                <th scope="col" class="text-center col-3">勤務先</th>
+            </tr>
+        </tbody>
+        <tbody>
+            @forelse ($family_members as $member)
+                <tr>
+                    <th scope="row" class="text-center">{{ $member->id }}</th>
+                    <td>
+                        <a href="{{ url('/customers', $member->id)}}">{{ $member->name }}</a>
+                    </td>
+                    <td class="text-center">
+                        @switch($member->gender)
+                            @case(1)
+                                男
+                                @break
+                            @case(2)
+                                女
+                                @break
+                            @default
+                                その他
+                        @endswitch
+                    </td>
+                    <td class="text-center">{{ $member->age }}</td>
+                    <td class="text-center">{!! str_replace('-', '/', $customer->birth) !!}</td>
+                    <td>{{ $member->job }}</td>
+                    <td>{{ $member->company }}</td>
+                </tr>
+            @empty
+                <tr>
+                    <th>該当なし</th>
+                </tr>
+            @endforelse
+            </tbody>
+        </table>
+
     <br>
     <h4>活動記録(最新５件)</h4>
     @forelse ($customer->progresses()->latest()->limit(5)->get() as $progress)

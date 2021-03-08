@@ -48,13 +48,25 @@ class CustomerController extends Controller
 
     public function show(Customer $customer)
     {
-        $auth_id = Auth::id();
         $customer->age = Customer::getAge($customer->birth);
         $deposit_status = Contract::getDepositStatus($customer->id);
 
-        $suggests = Customer::getSuggests($customer, $deposit_status);
+        $query = Customer::query();
+        $family_members = $query
+                            ->whereNotIn('id', [$customer->id])
+                            ->where('tel', $customer->tel)
+                            ->get();
+        $family_members->age = Customer::setAllCustomersAge($family_members);
 
-        return view('customers.show')->with(['auth_id' => $auth_id, 'customer' => $customer, 'deposit_status' => $deposit_status, 'suggests' => $suggests]);
+        $suggests = Customer::getSuggests($customer, $deposit_status, $family_members);
+
+        return view('customers.show')
+                ->with([
+                    'customer' => $customer,
+                    'deposit_status' => $deposit_status,
+                    'family_members' => $family_members,
+                    'suggests' => $suggests,
+                ]);
     }
 
     public function edit(Customer $customer)
