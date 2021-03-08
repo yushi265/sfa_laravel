@@ -20,7 +20,7 @@ class ProgressController extends Controller
     public function index()
     {
         $auth = Auth::user();
-        $progresses = Progress::latest()->paginate(10);
+        $progresses = Progress::with('customer', 'user')->latest()->paginate(10);
         return view('progresses.index')->with(['progresses' => $progresses, 'auth' => $auth]);
     }
 
@@ -127,8 +127,7 @@ class ProgressController extends Controller
                 });
         }
 
-
-        $progresses = $query->latest()->paginate(10);
+        $progresses = $query->with('customer', 'user', 'status')->latest()->paginate(10);
 
         return view('progresses.index')->with([
             'progresses' => $progresses,

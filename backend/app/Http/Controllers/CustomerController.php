@@ -60,10 +60,17 @@ class CustomerController extends Controller
         $family_members = $query
                             ->whereNotIn('id', [$customer->id])
                             ->where('tel', $customer->tel)
+                            ->with('gender', 'job')
                             ->get();
         $family_members->age = Customer::setAllCustomersAge($family_members);
 
         $suggests = Customer::getSuggests($customer, $deposit_status, $family_members);
+
+        $progresses = Progress::where('customer_id', $customer->id)
+                                ->latest()
+                                ->limit(5)
+                                ->get();
+        $progresses->load('customer', 'user');
 
         return view('customers.show')
                 ->with([
@@ -71,6 +78,7 @@ class CustomerController extends Controller
                     'deposit_status' => $deposit_status,
                     'family_members' => $family_members,
                     'suggests' => $suggests,
+                    'progresses' => $progresses,
                 ]);
     }
 
@@ -78,7 +86,8 @@ class CustomerController extends Controller
     {
         $genders = Gender::all();
         $jobs = Job::all();
-        return view('customers.edit')->with(['customer' => $customer, 'genders' => $genders, 'jobs' => $jobs]);
+        return view('customers.edit')
+            ->with(['customer' => $customer, 'genders' => $genders, 'jobs' => $jobs]);
     }
 
     public function update(CustomerRequest $request, Customer $customer)
@@ -105,12 +114,13 @@ class CustomerController extends Controller
         $customers = $query
             ->where('name', 'like', '%' . $search . '%')
             ->orWhere('ruby', 'like', '%' . $search . '%')
-            // ->orWhere('gender', 'like', '%' . $search . '%')
-            ->orWhere('tel', 'like', '%' . $search . '%')
+            ->orWhere('tel', $search)
             ->orWhere('address', 'like', '%' . $search . '%')
-            // ->orWhere('job_id', 'like', '%' . $search . '%')
             ->orWhere('company', 'like', '%' . $search . '%')
+            ->with('gender')
             ->paginate(10);
+
+        // $customers->load('gender');
 
         $customers = Customer::setAllCustomersAge($customers);
 

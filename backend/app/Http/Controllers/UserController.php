@@ -11,8 +11,8 @@ class UserController extends Controller
 {
     public function home()
     {
-        $latest_progresses = Progress::latest()->limit(3)->get();
-        $latest_contracts = Contract::latest()->limit(3)->get();
+        $latest_progresses = Progress::with('customer', 'user')->latest()->limit(3)->get();
+        $latest_contracts = Contract::with('customer', 'contract_type')->latest()->limit(3)->get();
         return view('home')->with(['latest_progresses' => $latest_progresses, 'latest_contracts' => $latest_contracts]);
     }
 

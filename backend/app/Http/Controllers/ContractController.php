@@ -125,6 +125,7 @@ class ContractController extends Controller
         }
 
         $contracts = $query
+            ->with('contract_type', 'customer')
             ->latest()
             ->paginate(10);
 

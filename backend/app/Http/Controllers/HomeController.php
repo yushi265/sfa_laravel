@@ -23,6 +23,8 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        $progresses = Progress::with('customer', 'user')->latest()->limit(3)->get();
+        $contracts = Contract::with('customer', 'contract_type')->latest()->limit(3)->get();
+        return view('home')->with(['progresses' => $progresses, 'contracts' => $contracts]);
     }
 }
