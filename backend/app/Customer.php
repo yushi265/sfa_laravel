@@ -72,7 +72,7 @@ class Customer extends Model
      * @param array $deposit_status
      * @return array $suggests
      */
-    public static function getSuggests($customer, $deposit_status)
+    public static function getSuggests($customer, $deposit_status, $family_members)
     {
         $suggests = [];
         // 年金
@@ -98,11 +98,23 @@ class Customer extends Model
             if ($customer->job == "自営業") {
                 $suggests[] = '融資先です。業況を確認して、積極的に支援しましょう！';
             } else {
-                $suggests[] = '融資あります。';
+                $suggests[] = '融資があります。';
             }
         } elseif ($deposit_status['loan'] <= 500000 && $deposit_status['loan'] > 0) {
             $suggests[] = '融資残高が少なくなってきました。リファイナンスを提案しましょう！';
         }
+
+        $has_student = false;
+        foreach ($family_members as $member) {
+            if ($member->job == '学生') {
+                $has_student = true;
+                break;
+            }
+        }
+        if ($has_student) {
+            $suggests[] = '家族に学生がいます。奨学ローンを提案してみましょう。';
+        }
+        
         return $suggests;
     }
 }
