@@ -27,7 +27,7 @@ class CustomerRequest extends FormRequest
             'name' => 'required|max:30',
             'gender_id' => 'required',
             'birth' => 'required|before_or_equal:"now"',
-            'tel' => 'required|integer|digits_between:1,11',
+            'tel' => 'required|regex:/^[0-9\-]+$/i|digits_between:1,11',
             'address' => 'required',
             'mail' => '',
             'job_id' => 'required',

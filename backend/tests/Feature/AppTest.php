@@ -130,6 +130,9 @@ class AppTest extends TestCase
         $response = $this->actingAs($user)->get('/contracts');
         $response->assertStatus(200)->assertViewIs('contracts.index')->assertSee('成約一覧');
 
+        $response = $this->actingAs($user)->get('/contracts/create');
+        $response->assertStatus(403);
+
         $response = $this->actingAs($user)->get('/contracts/1/edit');
         $response->assertStatus(403);
 
@@ -140,9 +143,14 @@ class AppTest extends TestCase
         $response = $this->actingAs($user)->get('/admin');
         $response->assertStatus(403)->assertDontSee('権限一覧');
 
+        $response = $this->actingAs($user)->get('/register');
+        $response->assertStatus(403);
+
+        // 存在しないルーティング
         $response = $this->actingAs($user)->get('/no_route');
         $response->assertStatus(404);
 
+        // データ削除
         $user->delete();
     }
 
@@ -172,15 +180,47 @@ class AppTest extends TestCase
         $response = $this->actingAs($user)->get('/customers');
         $response->assertStatus(200)->assertViewIs('customers.index')->assertSee('顧客データベース');
 
-        $response = $this->actingAs($user)->get('/customers/1');
-        $response->assertStatus(200)->assertViewIs('customers.show')->assertSee('鈴木達也');
-
         $response = $this->actingAs($user)->get('/customers/create');
         $response->assertStatus(200);
+
+        $response = $this->actingAs($user)->post('/customers', [
+            'name' => 'テスト顧客',
+            'ruby' => 'テストカスタマー',
+            'gender_id' => '1',
+            'birth' => '2020-01-01',
+            'tel' => '0123456789',
+            'address' => '千葉県千葉市千葉1000',
+            'mail' => 'customer@test.com',
+            'job_id' => '1',
+            'company' => '株式会社テスト'
+            ]);
+        $response->assertRedirect('/customers');
+        $readCustomer = \App\Customer::where('name', 'テスト顧客')->first();
+        $this->assertNotNull($readCustomer);
+
+        $response = $this->actingAs($user)->get('/customers/' . $readCustomer->id);
+        $response->assertStatus(200)->assertViewIs('customers.show')->assertSee('テスト顧客');
 
         $response = $this->actingAs($user)->get('/customers/1/edit');
         $response->assertStatus(200);
 
+        $response = $this->actingAs($user)->patch('/customers/' . $readCustomer->id, [
+            'name' => 'テスト編集顧客',
+            'ruby' => 'テストヘンシュウカスタマー',
+            'gender_id' => '2',
+            'birth' => '2000-01-01',
+            'tel' => '0123456789',
+            'address' => '千葉県千葉市千葉5000',
+            'mail' => '',
+            'job_id' => '4',
+            'company' => ''
+        ]);
+        $response->assertRedirect('/customers/' . $readCustomer->id);
+
+        $editedCustomer = \App\Customer::where('name', 'テスト編集顧客')->first();
+        $this->assertNotNull($editedCustomer);
+
+        // 進捗管理テスト
         $response = $this->actingAs($user)->get('/progresses');
         $response->assertStatus(200)->assertViewIs('progresses.index')->assertSee('進捗一覧');
 
@@ -192,7 +232,7 @@ class AppTest extends TestCase
 
         $response = $this->actingAs($user)->post('/progresses', [
             'user_id' => $user->id,
-            'customer_id' => '1',
+            'customer_id' => $editedCustomer->id,
             'status_id' => '1',
             'body' => '進捗のテスト中です！！',
             'created_at' => now(),
@@ -201,9 +241,10 @@ class AppTest extends TestCase
         $readProgress = \App\Progress::where('body', '進捗のテスト中です！！')->first();
         $this->assertNotNull($readProgress);
 
-        $response = $this->actingAs($user)->patch('/progresses/' . $readProgress->id, [
+        $response = $this->actingAs($user)->patch('/progresses/' . $readProgress->id,
+        [
             'user_id' => $user->id,
-            'customer_id' => '1',
+            'customer_id' => $editedCustomer->id,
             'status_id' => '5',
             'body' => '進捗の編集のテスト中です！！',
             'created_at' => now(),
@@ -219,15 +260,54 @@ class AppTest extends TestCase
         $deletedProgress = \App\Progress::where('body', '進捗の編集のテスト中です！！')->first();
         $this->assertNull($deletedProgress);
 
+        // 成約管理テスト
         $response = $this->actingAs($user)->get('/contracts');
         $response->assertStatus(200)->assertViewIs('contracts.index')->assertSee('成約一覧');
 
+        $response = $this->actingAs($user)->get('/contracts/create');
+        $response->assertStatus(200)->assertViewIs('contracts.create')->assertSee('選んでください');
+
+        $response = $this->actingAs($user)->post('/contracts', [
+            'customer_id' => $editedCustomer->id,
+            'contract_type_id' => '9',
+            'amount' => '4242424242',
+            'due_date' => '2024-01-12',
+            'created_at' => '2021-01-12 10:00:00',
+        ]);
+        $response->assertRedirect('/contracts');
+        $readContract = \App\Contract::where('amount', '4242424242')->first();
+        $this->assertNotNull($readContract);
+
+        $response = $this->actingAs($user)->get('/contracts/' . $readContract->id . '/edit');
+        $response->assertStatus(200);
+
+        $response = $this->actingAs($user)->patch('/contracts/' . $readContract->id, [
+            'customer_id' => $editedCustomer->id,
+            'contract_type_id' => '6',
+            'amount' => '2424242424',
+            'due_date' => '2025-01-12',
+            'created_at' => '2021-01-12 10:00:00',
+        ]);
+        $response->assertRedirect('/contracts');
+        $editedContract = \App\Contract::where('amount', '2424242424')->first();
+        $this->assertNotNull($editedContract);
+
+        $response = $this->actingAs($user)->delete('/contracts/' . $editedContract->id);
+        $response->assertRedirect('/contracts');
+
+        // 権限管理テスト
         $response = $this->actingAs($user)->get('/admin');
         $response->assertStatus(403)->assertDontSee('権限一覧');
 
+        $response = $this->actingAs($user)->get('/register');
+        $response->assertStatus(403);
+
+        // 存在しないルーティング
         $response = $this->actingAs($user)->get('/no_route');
         $response->assertStatus(404);
 
+        // データ削除
+        $editedCustomer->delete();
         $user->delete();
     }
 
@@ -246,67 +326,25 @@ class AppTest extends TestCase
             'role' => self::SYSTEM_ADMIN,
         ]);
 
+        // ログインテスト
         $response = $this->actingAs($user)->get('/login');
         $response->assertStatus(302);
 
         $response = $this->actingAs($user)->get('/');
         $response->assertStatus(200)->assertViewIs('home')->assertSee('追加する');
 
+        // 顧客管理テスト
         $response = $this->actingAs($user)->get('/customers');
         $response->assertStatus(200)->assertViewIs('customers.index')->assertSee('顧客データベース');
 
-        $response = $this->actingAs($user)->get('/progresses');
-        $response->assertStatus(200)->assertViewIs('progresses.index')->assertSee('進捗一覧');
 
-        $response = $this->actingAs($user)->get('/contracts');
-        $response->assertStatus(200)->assertViewIs('contracts.index')->assertSee('成約一覧');
+        $response = $this->actingAs($user)->get('/customers/create');
+        $response->assertStatus(200);
 
-        $response = $this->actingAs($user)->get('/admin');
-        $response->assertStatus(200)->assertViewIs('users.admin_index')->assertSee('権限一覧');
-
-        $response = $this->actingAs($user)->get('/no_route');
-        $response->assertStatus(404);
-
-        $user->delete();
-    }
-
-    /**
-     * Usersテーブルのテスト
-     *
-     * @return void
-     */
-    public function testUsers()
-    {
-        $user = new \App\User;
-        $user->name = "テストユーザー";
-        $user->email = "test@test.com";
-        $user->password = \Hash::make('password');
-        $user->save();
-
-        $readUser = \App\User::where('name', 'テストユーザー')->first();
-        $this->assertNotNull($readUser);            // データが取得できたかテスト
-        $this->assertTrue(\Hash::check('password', $readUser->password)); // パスワードが一致しているかテスト
-
-        $admin_role_num = 5;
-        $user->role = $admin_role_num;
-        $user->save();
-        $this->assertEquals($admin_role_num, $user->role);
-
-
-        \App\User::where('email', 'test@test.com')->delete(); // テストデータの削除
-    }
-
-    /**
-     * Customersテーブルのテスト
-     *
-     * @return void
-     */
-    public function testCustomers()
-    {
-        $customer = new \App\Customer([
-            'name' => 'テストカスタマー',
+        $response = $this->actingAs($user)->post('/customers', [
+            'name' => 'テスト顧客',
             'ruby' => 'テストカスタマー',
-            'gender_id' => '2',
+            'gender_id' => '1',
             'birth' => '2020-01-01',
             'tel' => '0123456789',
             'address' => '千葉県千葉市千葉1000',
@@ -314,45 +352,138 @@ class AppTest extends TestCase
             'job_id' => '1',
             'company' => '株式会社テスト'
         ]);
-        $customer->save();
-
-        $readCustomer = \App\Customer::where('name', 'テストカスタマー')->first();
+        $response->assertRedirect('/customers');
+        $readCustomer = \App\Customer::where('name', 'テスト顧客')->first();
         $this->assertNotNull($readCustomer);
 
-        $customer->name = 'テスト顧客';
-        $customer->ruby = 'テストコキャク';
-        $customer->gender_id = '1';
-        $customer->birth = '2000-12-31';
-        $customer->tel = '9876543210';
-        $customer->address = '千葉県千葉市千葉5000';
-        $customer->mail = 'customer_edited@test.com';
-        $customer->job_id = '4';
-        $customer->company = '';
+        $response = $this->actingAs($user)->get('/customers/' . $readCustomer->id);
+        $response->assertStatus(200)->assertViewIs('customers.show')->assertSee('テスト顧客');
 
-        $customer->save();
+        $response = $this->actingAs($user)->get('/customers/1/edit');
+        $response->assertStatus(200);
 
-        $editedCustomer = \App\Customer::where('name', 'テスト顧客')
-                                        ->where('ruby', 'テストコキャク')
-                                        ->where('gender_id', '1')
-                                        ->where('birth', '2000-12-31')
-                                        ->where('tel', '9876543210')
-                                        ->where('address', '千葉県千葉市千葉5000')
-                                        ->where('mail', 'customer_edited@test.com')
-                                        ->where('job_id', '4')
-                                        ->where('company', '')
-                                        ->first();
+        $response = $this->actingAs($user)->patch('/customers/' . $readCustomer->id, [
+            'name' => 'テスト編集顧客',
+            'ruby' => 'テストヘンシュウカスタマー',
+            'gender_id' => '2',
+            'birth' => '2000-01-01',
+            'tel' => '0123456789',
+            'address' => '千葉県千葉市千葉5000',
+            'mail' => '',
+            'job_id' => '4',
+            'company' => ''
+        ]);
+        $response->assertRedirect('/customers/' . $readCustomer->id);
+
+        $editedCustomer = \App\Customer::where('name', 'テスト編集顧客')->first();
         $this->assertNotNull($editedCustomer);
 
-        \App\Customer::where('name', 'テスト顧客')->delete();
+        // 進捗管理テスト
+        $response = $this->actingAs($user)->get('/progresses');
+        $response->assertStatus(200)->assertViewIs('progresses.index')->assertSee('進捗一覧');
+
+        $response = $this->actingAs($user)->get('/progresses/create');
+        $response->assertStatus(200)->assertViewIs('progresses.create')->assertSee('選んでください');
+
+        $response = $this->actingAs($user)->get('/progresses/1/edit');
+        $response->assertStatus(200);
+
+        $response = $this->actingAs($user)->post('/progresses', [
+            'user_id' => $user->id,
+            'customer_id' => $editedCustomer->id,
+            'status_id' => '1',
+            'body' => '進捗のテスト中です！！',
+            'created_at' => now(),
+        ]);
+
+        $readProgress = \App\Progress::where('body', '進捗のテスト中です！！')->first();
+        $this->assertNotNull($readProgress);
+
+        $response = $this->actingAs($user)->patch(
+            '/progresses/' . $readProgress->id,
+            [
+                'user_id' => $user->id,
+                'customer_id' => $editedCustomer->id,
+                'status_id' => '5',
+                'body' => '進捗の編集のテスト中です！！',
+                'created_at' => now(),
+            ]
+        );
+        $response->assertRedirect('/progresses');
+
+        $editedProgress = \App\Progress::where('body', '進捗の編集のテスト中です！！')->first();
+        $this->assertNotNull($editedProgress);
+
+        $response = $this->actingAs($user)->delete('/progresses/' . $editedProgress->id);
+        $response->assertRedirect('/progresses');
+
+        $deletedProgress = \App\Progress::where('body', '進捗の編集のテスト中です！！')->first();
+        $this->assertNull($deletedProgress);
+
+        // 成約管理テスト
+        $response = $this->actingAs($user)->get('/contracts');
+        $response->assertStatus(200)->assertViewIs('contracts.index')->assertSee('成約一覧');
+
+        $response = $this->actingAs($user)->get('/contracts/create');
+        $response->assertStatus(200)->assertViewIs('contracts.create')->assertSee('選んでください');
+
+        $response = $this->actingAs($user)->post('/contracts', [
+            'customer_id' => $editedCustomer->id,
+            'contract_type_id' => '9',
+            'amount' => 4242424242,
+            'due_date' => '2024-01-12',
+            'created_at' => '2021-01-12 10:00:00',
+        ]);
+        $response->assertRedirect('/contracts');
+        $readContract = \App\Contract::where('amount', '4242424242')->first();
+        $this->assertNotNull($readContract);
+
+        $response = $this->actingAs($user)->get('/contracts/'. $readContract->id .'/edit');
+        $response->assertStatus(200);
+
+        $response = $this->actingAs($user)->patch('/contracts/' . $readContract->id, [
+            'customer_id' => $editedCustomer->id,
+            'contract_type_id' => '6',
+            'amount' => 2424242424,
+            'due_date' => '2024-01-12',
+            'created_at' => '2021-01-12 10:00:00',
+        ]);
+        $response->assertRedirect('/contracts');
+        $editedContract = \App\Contract::where('amount', '2424242424')->first();
+        $this->assertNotNull($editedContract);
+
+        $response = $this->actingAs($user)->delete('/contracts/' . $editedContract->id);
+        $response->assertRedirect('/contracts');
+
+        // 権限管理テスト
+        $response = $this->actingAs($user)->get('/admin');
+        $response->assertStatus(200)->assertSee('権限一覧');
+
+        $response = $this->actingAs($user)->get('/register');
+        $response->assertStatus(200);
+
+        $response = $this->actingAs($user)->post('/register', [
+            'name' => 'テストユーザー',
+            'email' => 'test-user@user.com',
+            'password' => '12345678',
+            'password_confirmation' => '12345678',
+        ]);
+        $readUser = \App\User::where('name', 'テストユーザー')->first();
+        $this->assertNotNull($readUser);
+        $this->assertTrue(\Hash::check('12345678', $readUser->password));
+
+        $readUser->role = self::ADMIN;
+        $readUser->save();
+        $this->assertEquals(self::ADMIN, $readUser->role);
+
+        $readUser->delete();
+
+        // 存在しないルーティング
+        $response = $this->actingAs($user)->get('/no_route');
+        $response->assertStatus(404);
+
+        // データ削除
+        $editedCustomer->delete();
+        $user->delete();
     }
-
-    /**
-     * Progressesテーブルのテスト
-     *
-     * @return void
-     */
-    // public function testProgresses()
-    // {
-
-    // }
 }
