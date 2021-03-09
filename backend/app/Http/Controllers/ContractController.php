@@ -9,6 +9,7 @@ use App\Contract;
 use App\Contract_type;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\ContractRequest;
+use App\Http\Requests\SearchRequest;
 
 class ContractController extends Controller
 {
@@ -105,7 +106,7 @@ class ContractController extends Controller
         return redirect('/contracts');
     }
 
-    public function search(Request $request)
+    public function search(SearchRequest $request)
     {
         $contract_types = Contract_type::all();
 

@@ -9,6 +9,7 @@ use App\Status;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\ProgressRequest;
+use App\Http\Requests\SearchRequest;
 
 class ProgressController extends Controller
 {
@@ -104,7 +105,7 @@ class ProgressController extends Controller
         return redirect()->back();
     }
 
-    public function search(Request $request)
+    public function search(SearchRequest $request)
     {
         $statuses = Status::all();
 

@@ -10,7 +10,7 @@
 
     <form action="{{ action('ProgressController@search') }}" method="get">
         <div class="input-group mb-3 col-md-6">
-            <input type="text" class="form-control" placeholder="内容を検索" name="search" aria-label="Recipient's username" aria-describedby="button-addon2" value="{{$request->input('search')}}">
+            <input type="text" class="form-control" placeholder="キーワードを入力" name="search" aria-label="Recipient's username" aria-describedby="button-addon2" value="{{$request->input('search')}}">
             <select class="form-select col-md-3" name="status" id="inputGroupSelect04" aria-label="Example select with button addon">
                 <option value="">状態</option>
                 @foreach ($statuses as $status)
@@ -22,6 +22,15 @@
             <button class="btn btn-outline-primary" type="submit" id="button-addon2">検索</button>
             <a href="{{ url('/progresses') }}" type='button' class="btn btn-outline-secondary">リセット</a>
         </div>
+        @if ($errors->any())
+        <div class="alert alert-danger col-md-6">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+        @endif
     </form>
 
 @forelse ($progresses as $progress)
