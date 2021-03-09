@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\DB;
 
 class Customer extends Model
 {
-    protected $fillable = ['name', 'ruby', 'gender', 'birth', 'tel', 'address', 'mail', 'job', 'company'];
+    protected $fillable = ['name', 'ruby', 'gender_id', 'birth', 'tel', 'address', 'mail', 'job_id', 'company'];
 
     public function progresses()
     {

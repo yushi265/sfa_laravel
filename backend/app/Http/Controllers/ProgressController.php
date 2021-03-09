@@ -102,7 +102,7 @@ class ProgressController extends Controller
     public function destroy(Progress $progress)
     {
         $progress->delete();
-        return redirect()->back();
+        return redirect('/progresses');
     }
 
     public function search(SearchRequest $request)
