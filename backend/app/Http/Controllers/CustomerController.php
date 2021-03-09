@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Requests\CustomerRequest;
+use App\Http\Requests\SearchRequest;
 use App\Customer;
 use App\Progress;
 use App\Contract;
@@ -107,7 +108,7 @@ class CustomerController extends Controller
 
     public function delete() {}
 
-    public function search(Request $request)
+    public function search(SearchRequest $request)
     {
         $genders = Gender::all();
         $jobs = Job::all();
@@ -126,6 +127,16 @@ class CustomerController extends Controller
         if ($request->filled('job_opt')) {
             $query->where('job_id', $job_opt);
         };
+
+        if ($request->filled('min_age')) {
+            $min_birth = date("Y-m-d", strtotime("-" . $request->min_age . " year"));
+            $query->where('birth', '<=', $min_birth);
+        }
+
+        if ($request->filled('max_age')) {
+            $max_birth = date("Y-m-d", strtotime("-" . $request->max_age + 1 . " year"));
+            $query->where('birth', '>', $max_birth);
+        }
 
         $query->where(function ($query) use ($search) {
             $query
