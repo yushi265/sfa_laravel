@@ -35,9 +35,9 @@ jobs:
       - run: composer install -n --prefer-dist
 
       - save_cache:
-          key: v1-dependencies-{{ checksum "composer.json" }}
+          key: v1-dependencies-{{ checksum "backend/composer.json" }}
           paths:
-            - ./backend
+            - ./vender
       - restore_cache:
           keys:
             - node-v1-{{ checksum "package.json" }}
