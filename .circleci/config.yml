@@ -57,7 +57,7 @@ jobs:
       # - run: touch storage/testing.sqlite
       # - run: php artisan migrate --env=testing --database=sfa_laravel --force
       - run: ls
-      - run: pwd 
+      - run: docker-compose exec app bash 
       - run: php artisan migrate --seed 
       # run tests with phpunit or codecept
       - run: ./backend/vendor/bin/phpunit
