@@ -9,6 +9,11 @@ jobs:
       # Specify the version you desire here
       - image: circleci/php:8.0-node-browsers
 
+      - image: circleci/mysql:5.7.22
+        environment:
+          MYSQL_DATABASE: 'sfa_laravel'
+          MYSQL_USER: 'phper'
+          MYSQL_ROOT_PASSWORD: 'secret'
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images
       # documented at https://circleci.com/docs/2.0/circleci-images/
@@ -49,10 +54,10 @@ jobs:
             - node_modules
 
       # prepare the database
-      - run: touch storage/testing.sqlite
-      - run: php artisan migrate --env=testing --database=sqlite_testing --force
+      # - run: touch storage/testing.sqlite
+      - run: php artisan migrate --env=testing --database=sfa_laravel --force
 
       # run tests with phpunit or codecept
-      #- run: ./vendor/bin/phpunit
-      - run: ./vendor/bin/codecept build
-      - run: ./vendor/bin/codecept run
+      - run: ./backend/vendor/bin/phpunit
+      # - run: ./vendor/bin/codecept build
+      # - run: ./vendor/bin/codecept run
