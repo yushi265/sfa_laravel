@@ -26,26 +26,21 @@
                     <td class="text-center ">{{ $user->id }}</td>
                     <td class=" ">{{ $user->name }}</td>
                     <td>
+                        @if (Auth::id() === $user->id)
+                        {{ $user->role->name }}
+                        <input type="hidden" name="user_admin_{{ $user->id }}" value="{{ $user->role_id }}">
+                        @else
                         <select class="form-select form-select-sm" aria-label=".form-select-sm example" name="user_admin_{{ $user->id }}">
-                            <option selected value="{{ $user->role }}">
-                                @switch($user->role)
-                                @case(1)
-                                システム管理者
-                                @break
-                                @case(5)
-                                管理者
-                                @break
-                                @case(10)
-                                一般ユーザー
-                                @break
-                                @endswitch
+                            <option selected value="{{ $user->role_id }}">
+                                {{ $user->role->name }}
                             </option>
-                            @if (Auth::id() !== $user->id)
-                            <option value="1">システム管理者</option>
-                            <option value="5">管理者</option>
-                            <option value="10">一般ユーザー</option>
-                            @endif
+                                @foreach ($roles as $role)
+                                    @if ($user->role_id !== $role->role_id)
+                                        <option value="{{ $role->role_id }}">{{ $role->name }}</option>
+                                    @endif
+                                @endforeach
                         </select>
+                        @endif
                     </td>
                 </tr>
                 @endforeach

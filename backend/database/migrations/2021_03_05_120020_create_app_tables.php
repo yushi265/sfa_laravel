@@ -13,6 +13,13 @@ class CreateAppTables extends Migration
      */
     public function up()
     {
+        Schema::create('user_roles', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->unsignedBigInteger('role_id')->unique();
+            $table->string('name');
+            $table->timestamps();
+        });
+
         Schema::create('genders', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('gender_id')->unique();
@@ -41,6 +48,18 @@ class CreateAppTables extends Migration
             $table->timestamps();
         });
 
+        Schema::create('users', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->string('name');
+            $table->string('email')->unique();
+            $table->timestamp('email_verified_at')->nullable();
+            $table->string('password');
+            $table->unsignedBigInteger('role_id')->default(10);
+            $table->rememberToken();
+            $table->timestamps();
+
+            $table->foreign('role_id')->references('role_id')->on('user_roles');
+        });
 
         Schema::create('customers', function (Blueprint $table) {
             $table->bigIncrements('id');
@@ -108,12 +127,15 @@ class CreateAppTables extends Migration
      */
     public function down()
     {
+        Schema::dropIfExists('user_roles');
         Schema::dropIfExists('contracts');
         Schema::dropIfExists('progresses');
         Schema::dropIfExists('customers');
+        Schema::dropIfExists('users');
         Schema::dropIfExists('jobs');
         Schema::dropIfExists('statuses');
         Schema::dropIfExists('contract_types');
         Schema::dropIfExists('genders');
+        Schema::dropIfExists('user_roles');
     }
 }

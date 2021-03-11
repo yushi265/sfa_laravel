@@ -19,7 +19,7 @@ class UsersTableSeeder extends Seeder
             'email' => 'system-admin@user.com',
             'email_verified_at' => now(),
             'password' => Hash::make('12345678'),
-            'role' => 1,
+            'role_id' => 1,
         ]);
 
         factory(User::class)->create([
@@ -27,7 +27,7 @@ class UsersTableSeeder extends Seeder
             'email' => 'admin@user.com',
             'email_verified_at' => now(),
             'password' => Hash::make('12345678'),
-            'role' => 5,
+            'role_id' => 5,
         ]);
 
         factory(User::class)->create([
@@ -35,7 +35,7 @@ class UsersTableSeeder extends Seeder
             'email' => 'sales@user.com',
             'email_verified_at' => now(),
             'password' => Hash::make('12345678'),
-            'role' => 10,
+            'role_id' => 10,
         ]);
 
         factory(User::class)->create([
@@ -43,7 +43,7 @@ class UsersTableSeeder extends Seeder
             'email' => 'loan@user.com',
             'email_verified_at' => now(),
             'password' => Hash::make('12345678'),
-            'role' => 10,
+            'role_id' => 10,
         ]);
 
         factory(User::class)->create([
@@ -51,7 +51,7 @@ class UsersTableSeeder extends Seeder
             'email' => 'teller@user.com',
             'email_verified_at' => now(),
             'password' => Hash::make('12345678'),
-            'role' => 10,
+            'role_id' => 10,
         ]);
     }
 }

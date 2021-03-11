@@ -69,14 +69,7 @@
                         @else
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    {{ Auth::user()->name }}
-                                    @can('system-only')
-                                        (システム管理者)
-                                    @elsecan('admin-higher')
-                                        (管理者)
-                                    @elsecan('user-higher')
-                                        (一般)
-                                    @endcan
+                                    {{ Auth::user()->name . '(' . Auth::user()->role->name .')' }}
                                     <span class="caret"></span>
                                 </a>
 

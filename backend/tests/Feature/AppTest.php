@@ -68,7 +68,7 @@ class AppTest extends TestCase
             'email' => 'general@test.com',
             'email_verified_at' => now(),
             'password' => Hash::make('12345678'),
-            'role' => self::GENERAL,
+            'role_id' => self::GENERAL,
         ]);
         // ログインテスト
         $response = $this->actingAs($user)->get('/login');
@@ -166,7 +166,7 @@ class AppTest extends TestCase
             'email' => 'admin@test.com',
             'email_verified_at' => now(),
             'password' => Hash::make('12345678'),
-            'role' => self::ADMIN,
+            'role_id' => self::ADMIN,
         ]);
 
         // ログインテスト
@@ -323,7 +323,7 @@ class AppTest extends TestCase
             'email' => 'system_admin@test.com',
             'email_verified_at' => now(),
             'password' => Hash::make('12345678'),
-            'role' => self::SYSTEM_ADMIN,
+            'role_id' => self::SYSTEM_ADMIN,
         ]);
 
         // ログインテスト
@@ -472,9 +472,9 @@ class AppTest extends TestCase
         $this->assertNotNull($readUser);
         $this->assertTrue(\Hash::check('12345678', $readUser->password));
 
-        $readUser->role = self::ADMIN;
+        $readUser->role_id = self::ADMIN;
         $readUser->save();
-        $this->assertEquals(self::ADMIN, $readUser->role);
+        $this->assertEquals(self::ADMIN, $readUser->role_id);
 
         $readUser->delete();
 

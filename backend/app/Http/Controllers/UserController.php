@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\User;
 use App\Progress;
 use App\Contract;
+use App\UserRole;
 
 class UserController extends Controller
 {
@@ -18,15 +19,17 @@ class UserController extends Controller
 
     public function admin_index()
     {
-        $users = User::all();
-        return view('users.admin_index')->with('users', $users);
+        $users = User::with('role')->get();
+        $roles = UserRole::all();
+
+        return view('users.admin_index')->with(['users' => $users, 'roles' => $roles]);
     }
 
     public function admin_set(Request $request)
     {
         $users = User::all();
         foreach ($users as $user) {
-            $user->role = $request->input('user_admin_'.$user->id);
+            $user->role_id = $request->input('user_admin_'.$user->id);
             $user->save();
         }
         return redirect()->back();
