@@ -1,11 +1,10 @@
-name: UnitTest
+name: sfa_laravel
 
 on:
   push:
-    branches:
-      - master
-      - 'fix/**'
-      - 'feature/**'
+    branches: [master]
+  pull_request:
+    branches: [master, dev]
 
 jobs:
   laravel_test:
@@ -56,3 +55,18 @@ jobs:
       - name: unit test
         working-directory: backend
         run: ./vendor/bin/phpunit
+
+deploy:
+    if: github.ref == 'refs/heads/master'
+    needs: [laravel-test]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Deploy
+        env:
+          PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
+          USER_NAME: ${{ secrets.USER_NAME }}
+          HOST_NAME: ${{ secrets.HOST_NAME }}
+        run: |
+          echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
+          ssh -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOST_NAME} 'cd /var/www/sfa_laravel/ && git pull origin master'
