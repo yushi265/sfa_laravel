@@ -59,7 +59,12 @@ jobs:
       - run:
           working_directory: backend
 #          name: upload artifacts to s3
-          command: php artisan migrate --env=testing --database=test_db --force  
+          command: php artisan migrate --seed
+
+      - run:
+          working_directory: backend
+          command: ./vendor/bin/phpunit
+      # php artisan migrate --env=testing --database=test_db --force  
       
       # run tests with phpunit or codecept
       # - run: ./backend/vendor/bin/phpunit
