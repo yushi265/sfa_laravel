@@ -53,10 +53,11 @@ jobs:
           paths:
             - node_modules
 
+      - run: cd backend
       # prepare the database
-      - run: touch backend/storage/testing.sqlite
+      - run: touch storage/testing.sqlite
 
-      # - run: php artisan migrate --env=testing --database=test_db --force  
+      - run: php artisan migrate --env=testing --database=test_db --force  
       
       # run tests with phpunit or codecept
       # - run: ./backend/vendor/bin/phpunit
