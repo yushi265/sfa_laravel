@@ -20,13 +20,13 @@ jobs:
         options: --health-cmd "mysqladmin ping -h localhost" --health-interval 20s --health-timeout 10s --health-retries 10
         env:
           MYSQL_ROOT_PASSWORD: password
-          MYSQL_DATABASE: testdatabase
+          MYSQL_DATABASE: sfa_laravel
 
     env:
       DB_CONNECTION: mysql
       DB_HOST: 127.0.0.1
       DB_PORT: 3306
-      DB_DATABASE: testdatabase
+      DB_DATABASE: sfa_laravel
       DB_USERNAME: root
       DB_PASSWORD: password
 
@@ -52,7 +52,7 @@ jobs:
         run: php artisan key:generate --env=testing
       - name: migrate
         working-directory: backend
-        run: php artisan migrate --seed
+        run: php artisan migrate --seed --force
       - name: unit test
         working-directory: backend
         run: ./vendor/bin/phpunit
