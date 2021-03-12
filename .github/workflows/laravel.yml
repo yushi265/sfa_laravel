@@ -58,7 +58,7 @@ jobs:
 
   deploy:
       if: github.ref == 'refs/heads/master'
-      needs: [laravel-test]
+      needs: [laravel_test]
       runs-on: ubuntu-latest
       steps:
         - uses: actions/checkout@v2
