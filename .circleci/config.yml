@@ -53,11 +53,13 @@ jobs:
           paths:
             - node_modules
 
-      - run: cd backend
       # prepare the database
-      - run: touch storage/testing.sqlite
+      # - run: touch storage/testing.sqlite
 
-      - run: php artisan migrate --env=testing --database=test_db --force  
+      - run:
+          working_directory: backend
+#          name: upload artifacts to s3
+          command: php artisan migrate --env=testing --database=test_db --force  
       
       # run tests with phpunit or codecept
       # - run: ./backend/vendor/bin/phpunit
