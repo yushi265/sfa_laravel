@@ -57,5 +57,4 @@ jobs:
             echo "APP_KEY=" > .env.testing
             php artisan key:generate
             php artisan migrate --seed --force
-
-      - run: ./backend/vendor/bin/phpunit
+            ./vendor/bin/phpunit
