@@ -12,6 +12,7 @@ jobs:
           APP_DEBUG: true
           APP_ENV: testing
           DB_CONNECTION: mysql
+          DB_HOST: db
           DB_DATABASE: test_db
           DB_USERNAME: phper
 
@@ -19,6 +20,7 @@ jobs:
         environment:
           MYSQL_DATABASE: 'test_db'
           MYSQL_USER: 'phper'
+          MYSQL_PASSWORD: 'secret'
           MYSQL_ROOT_PASSWORD: 'secret'
 
     steps:
