@@ -54,7 +54,7 @@ jobs:
             - node_modules
 
       # prepare the database
-      - run: touch storage/testing.sqlite
+      - run: touch backend/storage/testing.sqlite
 
       # - run: php artisan migrate --env=testing --database=test_db --force  
       
