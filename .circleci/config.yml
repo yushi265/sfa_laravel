@@ -59,8 +59,7 @@ jobs:
       - run:
           working_directory: backend
           command: |
-            php artisan migrate --seed
-            yes
+            php artisan migrate --seed --force
             .vendor/bin/phpunit
 
       # php artisan migrate --env=testing --database=test_db --force  
