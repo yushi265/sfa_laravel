@@ -58,3 +58,7 @@ jobs:
             php artisan key:generate
             php artisan migrate --seed --force
             ./vendor/bin/phpunit
+
+      - run:
+          working_directory: backend
+          command: ./vendor/bin/phpunit
