@@ -127,7 +127,6 @@ class CreateAppTables extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('user_roles');
         Schema::dropIfExists('contracts');
         Schema::dropIfExists('progresses');
         Schema::dropIfExists('customers');
