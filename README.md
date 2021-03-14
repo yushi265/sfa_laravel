@@ -39,4 +39,8 @@
 
 ### ＜今後やりたいこと＞
 - デプロイの自動化
+  - パーミッションエラー発生
+    - chmod 600 id_rsa で解決
+  - error: cannot open .git/FETCH_HEAD: Permission denied発生
+    - 原因究明中
 - リファクタリング
