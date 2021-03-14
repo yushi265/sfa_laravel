@@ -37,10 +37,13 @@
 - configファイルの理解不足
 - mysqlの接続で苦戦(environment設定)
 
+### ○デプロイの自動化
+- 開発効率化や人為的なエラーを減らすために自動化
+- インフラの知識が全くなくかなり苦労
+- パーミッションエラー発生
+  - chmod 600 id_rsa で解決
+- error: cannot open .git/FETCH_HEAD: Permission denied発生
+  - sudo chown -R ユーザ名 ./ でプロジェクトの所有者を変更
+ 
 ### ＜今後やりたいこと＞
-- デプロイの自動化
-  - パーミッションエラー発生
-    - chmod 600 id_rsa で解決
-  - error: cannot open .git/FETCH_HEAD: Permission denied発生
-    - 原因究明中
 - リファクタリング
