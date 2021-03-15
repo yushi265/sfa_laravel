@@ -5,7 +5,7 @@
 <div class="container">
     <h4>成約一覧
         @can('admin-higher')
-        　　<a class="btn btn-outline-primary" href="{{ action('ContractController@create') }}" role="button">追加</a>
+            <a class="btn btn-outline-primary" href="{{ action('ContractController@create') }}" role="button">追加</a>
         @endcan
     </h4>
 
@@ -13,9 +13,9 @@
         <div class="input-group mb-3 col-md-6">
             <input type="text" class="form-control" placeholder="キーワードを入力" name="search" aria-label="Recipient's username" aria-describedby="button-addon2" value="{{$request->input('search')}}">
             <select class="form-select col-md-4" name="contract_type_id" id="inputGroupSelect04" aria-label="Example select with button addon">
-                <option value="" selected >種別</option>
+                <option value="" selected>種別</option>
                 @foreach ($contract_types as $type)
-                    <option value="{{ $type->contract_type_id }}" @if ($request->constract_type_id == $type->contract_type_id) selected @endif>
+                    <option value="{{ $type->contract_type_id }}" @if ($request->contract_type_id == $type->contract_type_id) selected @endif>
                         {{ $type->name }}
                     </option>
                 @endforeach

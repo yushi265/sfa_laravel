@@ -86,7 +86,7 @@ class Customer extends Model
     {
         $suggests = [];
         // 年金
-        if ($customer->age >= 60 && $customer->age < 65) {
+        if ($customer->age >= 60 && $customer->age <= 65) {
             $suggests[] = '年金が請求できる可能性があります。提案してみましょう！';
         }
         // 普通預金
