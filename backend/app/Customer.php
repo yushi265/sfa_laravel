@@ -104,6 +104,7 @@ class Customer extends Model
         if ($customer->job_id == 4) {
             $suggests[] = '学生です。奨学ローンが必要な可能性があります。ご親族にお会いしたら提案してみましょう！';
         }
+
         if ($deposit_status['loan'] > 500000) {
             if ($customer->job_id == 3) {
                 $suggests[] = '融資先です。業況を確認して、積極的に支援しましょう！';
@@ -114,15 +115,14 @@ class Customer extends Model
             $suggests[] = '融資残高が少なくなってきました。リファイナンスを提案しましょう！';
         }
 
-        $has_student = false;
-        foreach ($family_members as $member) {
-            if ($member->job_id == 4) {
-                $has_student = true;
-                break;
+        //家族に学生がいるとき、奨学ローンを推進（学生自身は除く）
+        if ($customer->job_id !== 4) {
+            foreach ($family_members as $member) {
+                if ($member->job_id == 4) {
+                    $suggests[] = '家族に学生がいます。奨学ローンを提案してみましょう。';
+                    break;
+                }
             }
-        }
-        if ($has_student) {
-            $suggests[] = '家族に学生がいます。奨学ローンを提案してみましょう。';
         }
 
         return $suggests;

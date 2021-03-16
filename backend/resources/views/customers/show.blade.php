@@ -104,7 +104,7 @@
                         {{ $member->gender->name}}
                     </td>
                     <td class="text-center">{{ $member->age }}</td>
-                    <td class="text-center">{!! str_replace('-', '/', $customer->birth) !!}</td>
+                    <td class="text-center">{!! str_replace('-', '/', $member->birth) !!}</td>
                     <td>{{ $member->job->name }}</td>
                     <td>{{ $member->company }}</td>
                 </tr>
