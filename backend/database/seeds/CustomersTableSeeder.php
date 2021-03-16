@@ -91,14 +91,14 @@ class CustomersTableSeeder extends Seeder
         $customer->save();
 
         $customer = new Customer([
-            'name' => '冨田碧依',
-            'ruby' => 'トミタアオイ',
+            'name' => '冨田真衣',
+            'ruby' => 'トミタマイ',
             'gender_id' => '2',
-            'birth' => '1931-10-07',
-            'tel' => '0493198070',
-            'address' => '千葉県山武郡横芝光町長山台4-15-11',
-            'mail' => 'ycfzzwsrxluyrhaoi3224@eqgt.zsb',
-            'job_id' => '1',
+            'birth' => '1957-12-17',
+            'tel' => '0493198089',
+            'address' => '千葉県山武郡横芝光町宮川15-11',
+            'mail' => '',
+            'job_id' => '2',
             'company' => ''
         ]);
         $customer->save();
@@ -160,7 +160,7 @@ class CustomersTableSeeder extends Seeder
             'ruby' => 'トミタアオイ',
             'gender_id' => '2',
             'birth' => '1931-10-07',
-            'tel' => '0493198070',
+            'tel' => '0493198089',
             'address' => '千葉県山武郡横芝光町長山台4-15-11',
             'mail' => 'ycfzzwsrxluyrhaoi3224@eqgt.zsb',
             'job_id' => '1',
@@ -535,6 +535,19 @@ class CustomersTableSeeder extends Seeder
         $customer->save();
 
         // ４０件
+
+        $customer = new Customer([
+            'name' => '鈴木雄太',
+            'ruby' => 'スズキユウタ',
+            'gender_id' => '1',
+            'birth' => '2005-11-08',
+            'tel' => '0464582145',
+            'address' => '千葉県八街市沖4258',
+            'mail' => '',
+            'job_id' => '4',
+            'company' => ''
+        ]);
+        $customer->save();
 
     }
 }
