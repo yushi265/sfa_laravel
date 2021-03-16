@@ -44,5 +44,8 @@
 - error: cannot open .git/FETCH_HEAD: Permission denied発生
   - sudo chown -R ユーザ名 ./ でプロジェクトの所有者を変更
  
-### ＜今後やりたいこと＞
+### ＜今後の課題＞
 - リファクタリング
+- API導入（地図？天気？）
+- 便利機能（西暦⇄和暦変換、年齢計算、タスク管理機能、スケジュール機能、slack的コミュニケーションツール）
+- dockerの勉強、CircleCIの勉強
