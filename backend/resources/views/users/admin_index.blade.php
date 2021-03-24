@@ -9,7 +9,7 @@
         </a>
     </h4>
 
-    <form action="{{ action('UserController@admin_set') }}" method="post">
+    <form action="{{ action('UserController@admin_set') }}" method="post" name='admin_set'>
         @csrf
         @method('patch')
         <table class="table table-bordered">
@@ -46,7 +46,7 @@
                 @endforeach
             </tbody>
         </table>
-        <button class="btn btn-outline-success" type="submit">権限を変更する</button>
+        <button class="btn btn-outline-success" type="submit" id="admin_submit_button">権限を変更する</button>
     </form><br>
 
 </div>

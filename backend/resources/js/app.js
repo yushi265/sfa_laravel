@@ -30,3 +30,12 @@ Vue.component('example-component', require('./components/ExampleComponent.vue').
 const app = new Vue({
     el: '#app',
 });
+
+function check(e) {
+    e.preventDefault();
+    if (window.confirm('変更してもよろしいですか？')) {
+        document.admin_set.submit();
+    }
+}
+
+document.getElementById('admin_submit_button').addEventListener("click", check);
