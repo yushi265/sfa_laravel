@@ -52,6 +52,9 @@
                             <a class="nav-link" href="{{ url('/admin') }}">権限管理</a>
                         </li>
                         @endcan
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{url('/weathers')}}">天気予報</a>
+                        </li>
                     </ul>
 
                     <!-- Right Side Of Navbar -->
