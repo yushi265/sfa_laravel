@@ -12,8 +12,8 @@
     {{-- 5時間天気 --}}
     <div class="row">
         <div class="col-md-6">
-            <p>5時間後までの天気</p>
-            <table class="table">
+            <p>＜5時間後までの天気＞</p>
+            <table class="table table-bordered">
                 <thead>
                     <tr>
                         <th scope="col">{{ date('n/j')}}</th>
@@ -36,8 +36,8 @@
         </div>
         {{-- 1週間天気 --}}
         <div class="col-md-6">
-            <p>1週間天気予報</p>
-            <table class="table">
+            <p>＜1週間天気予報＞</p>
+            <table class="table table-bordered">
                 <thead>
                     <tr>
                         <th scope="col">日</th>
