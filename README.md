@@ -49,6 +49,11 @@
   - chmod 600 id_rsa で解決
 - error: cannot open .git/FETCH_HEAD: Permission denied発生
   - sudo chown -R ユーザ名 ./ でプロジェクトの所有者を変更
+
+### ○外部APIと連携
+- OpenWeatherのAPIを利用し、天気予報ページを追加
+- 複雑な連想配列に慣れていないためデータの取り出しに苦労した
+- フロント技術を使用していないためUIの改善が必要
  
 ### ＜今後の課題＞
 - リファクタリング
