@@ -55,4 +55,6 @@ Route::group(['middleware' => ['auth', 'can:user-higher']], function () {
 
     Route::get('/contracts', 'ContractController@index');
     Route::get('/contracts', 'ContractController@search');
+
+    Route::get('/weathers', 'WeatherController@index');
 });
