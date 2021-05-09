@@ -24,37 +24,49 @@ Route::group(['middleware' => ['auth', 'can:system-only']], function () {
 
 // 管理者以上
 Route::group(['middleware' => ['auth', 'can:admin-higher']], function () {
-    Route::get('/customers/create', 'CustomerController@create');
-    Route::post('/customers', 'CustomerController@store');
-    Route::get('/customers/{customer}/edit', 'CustomerController@edit');
-    Route::patch('/customers/{customer}', 'CustomerController@update');
+    Route::prefix('customers/')->group(function () {
+        Route::get('create', 'CustomerController@create');
+        Route::post('', 'CustomerController@store');
+        Route::get('{customer}/edit', 'CustomerController@edit');
+        Route::patch('{customer}', 'CustomerController@update');
+    });
 
-    Route::get('/progresses/{progress}/edit', 'ProgressController@edit');
-    Route::patch('/progresses/{progress}', 'ProgressController@update');
-    Route::delete('/progresses/{progress}', 'ProgressController@destroy');
+    Route::prefix('progresses/')->group(function () {
+        Route::get('{progress}/edit', 'ProgressController@edit');
+        Route::patch('{progress}', 'ProgressController@update');
+        Route::delete('{progress}', 'ProgressController@destroy');
+    });
 
-    Route::get('/contracts/create', 'ContractController@create');
-    Route::post('contracts', 'ContractController@store');
-    Route::get('/contracts/{contract}/edit', 'ContractController@edit');
-    Route::patch('/contracts/{contract}', 'ContractController@update');
-    Route::delete('/contracts/{contract}', 'ContractController@destroy');
+    Route::prefix('contracts/')->group(function () {
+        Route::get('create', 'ContractController@create');
+        Route::post('', 'ContractController@store');
+        Route::get('{contract}/edit', 'ContractController@edit');
+        Route::patch('{contract}', 'ContractController@update');
+        Route::delete('{contract}', 'ContractController@destroy');
+    });
 });
 
 // 全ユーザ
 Route::group(['middleware' => ['auth', 'can:user-higher']], function () {
     Route::get('/', 'UserController@home');
 
-    Route::get('/customers', 'CustomerController@index');
-    Route::get('/customers/{customer}', 'CustomerController@show');
-    Route::get('/customers', 'CustomerController@search');
+    Route::prefix('customers/')->group(function () {
+        Route::get('', 'CustomerController@index');
+        Route::get('{customer}', 'CustomerController@show');
+        Route::get('', 'CustomerController@search');
+    });
 
-    Route::get('/progresses', 'ProgressController@index');
-    Route::get('/progresses/create', 'ProgressController@create');
-    Route::post('/progresses', 'ProgressController@store');
-    Route::get('/progresses', 'ProgressController@search');
+    Route::prefix('progresses/')->group(function () {
+        Route::get('', 'ProgressController@index');
+        Route::get('create', 'ProgressController@create');
+        Route::post('', 'ProgressController@store');
+        Route::get('', 'ProgressController@search');
+    });
 
-    Route::get('/contracts', 'ContractController@index');
-    Route::get('/contracts', 'ContractController@search');
+    Route::prefix('contracts/')->group(function () {
+        Route::get('', 'ContractController@index');
+        Route::get('', 'ContractController@search');
+    });
 
     Route::get('/weathers', 'WeatherController@index');
 });
