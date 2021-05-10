@@ -1,9 +1,9 @@
 <!-- Navbar -->
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
     <!-- Container wrapper -->
     <div class="container-fluid">
         <!-- Navbar brand -->
-        <a class="navbar-brand" href="{{ url('/customers') }}">
+        <a class="navbar-brand" href="{{ url('/') }}">
             SFA
         </a>
 
@@ -18,9 +18,6 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <!-- Left Side Of Navbar -->
             <ul class="navbar-nav mr-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ url('/') }}">HOME</a>
-                </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{{ url('/customers') }}">顧客管理</a>
                 </li>
@@ -38,11 +35,7 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{{ url('/weathers') }}">天気予報</a>
                 </li>
-            </ul>
 
-            <!-- Right Side Of Navbar -->
-            <ul class="navbar-nav ml-auto">
-                <!-- Authentication Links -->
                 @guest
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('login') }}">{{ __('ログイン') }}</a>

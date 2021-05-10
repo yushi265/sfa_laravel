@@ -33,9 +33,7 @@
 
 <body>
     <div id="app">
-        <div class="container">
             @include('layouts.nav')
-        </div>
 
         <main class="py-4">
             @yield('content')
