@@ -55,7 +55,6 @@ class CustomerController extends Controller
     public function show(Customer $customer)
     {
         $customer->age = Customer::getAge($customer->birth);
-        $deposit_status = Contract::getDepositStatus($customer->id);
 
         $query = Customer::query();
         $family_members = $query
@@ -65,7 +64,7 @@ class CustomerController extends Controller
                             ->get();
         $family_members->age = Customer::setAllCustomersAge($family_members);
 
-        $suggests = Customer::getSuggests($customer, $deposit_status, $family_members);
+        $suggests = Customer::getSuggests($customer, $family_members);
 
         $progresses = Progress::where('customer_id', $customer->id)
                                 ->latest()
@@ -76,7 +75,6 @@ class CustomerController extends Controller
         return view('customers.show')
                 ->with([
                     'customer' => $customer,
-                    'deposit_status' => $deposit_status,
                     'family_members' => $family_members,
                     'suggests' => $suggests,
                     'progresses' => $progresses,

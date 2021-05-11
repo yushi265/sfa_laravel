@@ -14,9 +14,24 @@ class Customer extends Model
         return $this->hasMany('App\Progress');
     }
 
-    public function contract()
+    public function contracts()
     {
         return $this->hasMany('App\Contract');
+    }
+
+    public function getAmountOfOrdinaryAttribute()
+    {
+        return $this->contracts()->where('contract_type_id', '2')->sum('amount');
+    }
+
+    public function getAmountOfTimeAttribute()
+    {
+        return $this->contracts()->where('contract_type_id', '6')->sum('amount');
+    }
+
+    public function getAmountOfLoanAttribute()
+    {
+        return $this->contracts()->where('contract_type_id', '9')->sum('amount');
     }
 
     public function gender()
@@ -82,7 +97,7 @@ class Customer extends Model
      * @param array $deposit_status
      * @return array $suggests
      */
-    public static function getSuggests($customer, $deposit_status, $family_members)
+    public static function getSuggests($customer, $family_members)
     {
         $suggests = [];
         // 年金
@@ -90,14 +105,14 @@ class Customer extends Model
             $suggests[] = '年金が請求できる可能性があります。提案してみましょう！';
         }
         // 普通預金
-        if ($deposit_status['ordinary'] > 5000000) {
+        if ($customer->amount_of_ordinary > 5000000) {
             $suggests[] = '普通預金に残高があります。定期預金を推進してみましょう！';
         }
-        if ($deposit_status['ordinary'] > 0 && $deposit_status['ordinary'] < 1000) {
+        if ($customer->amount_of_ordinary > 0 && $customer->amount_of_ordinary < 1000) {
             $suggests[] = '普通預金の残高が少なくなっています。フリーローンやカードローンを推進してみましょう！';
         }
         // 定期預金
-        if ($deposit_status['time'] > 10000000) {
+        if ($customer->amount_of_time > 10000000) {
             $suggests[] = '大口預金先です。定期預金の満期管理に注意しましょう！';
         }
         // 融資
@@ -105,13 +120,13 @@ class Customer extends Model
             $suggests[] = '学生です。奨学ローンが必要な可能性があります。ご親族にお会いしたら提案してみましょう！';
         }
 
-        if ($deposit_status['loan'] > 500000) {
+        if ($customer->amount_of_loan > 500000) {
             if ($customer->job_id == 3) {
                 $suggests[] = '融資先です。業況を確認して、積極的に支援しましょう！';
             } else {
                 $suggests[] = '融資があります。';
             }
-        } elseif ($deposit_status['loan'] <= 500000 && $deposit_status['loan'] > 0) {
+        } elseif ($customer->amount_of_loan <= 500000 && $customer->amount_of_loan > 0) {
             $suggests[] = '融資残高が少なくなってきました。リファイナンスを提案しましょう！';
         }
 

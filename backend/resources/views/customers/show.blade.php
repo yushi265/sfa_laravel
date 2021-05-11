@@ -73,9 +73,9 @@
         </tbody>
         <tbody>
             <tr>
-                <td class="text-center">￥{{ number_format($deposit_status['ordinary']) }}</td>
-                <td class="text-center">￥{{ number_format($deposit_status['time']) }}</td>
-                <td class="text-center">￥{{ number_format($deposit_status['loan']) }}</td>
+                <td class="text-center">￥{{ number_format($customer->amount_of_ordinary) }}</td>
+                <td class="text-center">￥{{ number_format($customer->amount_of_time) }}</td>
+                <td class="text-center">￥{{ number_format($customer->amount_of_loan) }}</td>
             </tr>
         </tbody>
     </table>
@@ -161,10 +161,6 @@
                     @method('delete')
                     <button class="btn btn-outline-danger" type="submit" value="{{ $progress->id }}" role="button">削除</button>
                 </form>
-            {{-- @elsecan('user-higher')
-                @if ($progress->user->id === $auth->id)
-                    <a class="btn btn-outline-success" href="#" role="button">編集</a>
-                @endif --}}
             @endcan
         </div>
     </div>
