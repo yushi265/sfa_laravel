@@ -2,87 +2,12 @@
 
 @section('content')
 
+
 <div class="container">
     <form action="{{ action('CustomerController@update', $customer) }}" method="post">
         @csrf
         {{ method_field('patch') }}
-        <div class="row g-2">
-            <div class="col-md-5">
-                <div class="form-floating mb-3">
-                    <input type="text" name="name" class="form-control" id="name" placeholder="名前" value="{{old('name', $customer->name)}}">
-                    <label for="name">名前</label>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="form-floating mb-3">
-                    <input type="text" name="ruby" class="form-control" id="ruby" placeholder="フリガナ" value="{{old('ruby', $customer->ruby)}}">
-                    <label for="ruby">フリガナ</label>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="form-floating">
-                    <select class="form-select" name="gender_id" id="gender_id" aria-label="Floating label select example">
-                        @foreach ($genders as $gender)
-                            <option value="{{ $gender->gender_id }}" @if(old('gender_id', $customer->gender_id) == $gender->gender_id) selected  @endif>{{ $gender->name }}</option>
-                        @endforeach
-                    </select>
-                    <label for="gender">性別</label>
-                </div>
-            </div>
-
-            <div class="row g-2">
-                <div class="col-md">
-                    <div class="form-floating mb-3">
-                        <input type=text class="form-control" name="address" id="address" placeholder="住所" value="{{old('address', $customer->address)}}">
-                        <label for="address">住所</label>
-                    </div>
-                </div>
-                <div class="col-md">
-                    <div class="form-floating mb-3">
-                        <input type=text class="form-control" name="birth" id="birth" placeholder="住所" value="{{old('birth', $customer->birth)}}">
-                        <label for="birth">生年月日　例:2000-03-25</label>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row g-2">
-                <div class="col-md">
-                    <div class="form-floating mb-3">
-                        <input type="text" class="form-control" name="tel" id="tel" placeholder="電話番号" value="{{old('tel', $customer->tel)}}">
-                        <label for="tel">電話番号</label>
-                    </div>
-                </div>
-                <div class="col-md">
-                    <div class="form-floating mb-3">
-                        <input type="email" class="form-control" name="mail" id="mail" placeholder="メールアドレス" value="{{old('mail', $customer->mail)}}">
-                        <label for="mail">メールアドレス</label>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row g-2">
-                <div class="col-md-4">
-                    <div class="form-floating">
-                        <select class="form-select" name="job_id" id="job_id" aria-label="Floating label select example">
-                            @foreach ($jobs as $job)
-                                <option value="{{ $job->job_id }}"
-                                @if (old('job_id', $customer->job_id) == $job->job_id)
-                                    selected
-                                @endif>{{ $job->name }}
-                                </option>
-                            @endforeach
-                        </select>
-                        <label for="job_id">職業</label>
-                    </div>
-                </div>
-                <div class="col-md-8">
-                    <div class="form-floating mb-3">
-                        <input type="text" class="form-control" name="company" id="company" placeholder="勤務先" value="{{old('company', $customer->company)}}">
-                        <label for="company">勤務先</label>
-                    </div>
-                </div>
-            </div>
-        </div>
+        @include('customers.form')
         <button type="submit" class="btn btn-outline-primary">更新</button>
     </form>
     <br>
