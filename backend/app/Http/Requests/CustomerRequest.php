@@ -56,6 +56,7 @@ class CustomerRequest extends FormRequest
             'gender.required'  => '性別を選択してください',
             'birth.required' => '生年月日を入力してください',
             'birth.before_or_equal' => '生年月日を確認してください',
+            'birth.date' => '正しい生年月日を入力してください',
             'tel.required' => '電話番号を入力してください',
             'tel.digits_between' => '電話番号は11文字以内で入力してください',
             'tel.regex' => '電話番号は数字で入力してください',
