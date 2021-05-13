@@ -16,6 +16,17 @@ class CustomerRequest extends FormRequest
         return true;
     }
 
+    public function getValidatorInstance()
+    {
+        $birth = $this->birth;
+        $birth = implode('-', $birth);
+        $this->merge([
+            'birth' => $birth,
+        ]);
+
+        return parent::getValidatorInstance();
+    }
+
     /**
      * Get the validation rules that apply to the request.
      *
@@ -25,8 +36,9 @@ class CustomerRequest extends FormRequest
     {
         return [
             'name' => 'required|max:30',
+            'ruby' => 'required|max:30',
             'gender_id' => 'required',
-            'birth' => 'required|before_or_equal:"now"',
+            'birth' => 'required|date|before_or_equal:"now"',
             'tel' => 'required|regex:/^[0-9\-]+$/i|digits_between:1,11',
             'address' => 'required',
             'mail' => '',
@@ -39,6 +51,8 @@ class CustomerRequest extends FormRequest
         return [
             'name.required' => '名前を入力してください',
             'name.max' => '名前は30文字以内で入力してください',
+            'ruby.required' => 'フリガナを入力してください',
+            'ruby.max' => 'フリガナは30文字以内で入力してください',
             'gender.required'  => '性別を選択してください',
             'birth.required' => '生年月日を入力してください',
             'birth.before_or_equal' => '生年月日を確認してください',
