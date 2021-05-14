@@ -61,7 +61,9 @@
         <select class="form-select" name="birth[year]" aria-label="Default select example">
             <option selected>年</option>
             @for ($i = config('customers_form.max_year'); $i > config('customers_form.min_year'); $i--)
-                <option value="{{ $i }}">{{ $i }}</option>
+                <option value="{{ $i }}">
+                        {{ $i }}
+                </option>
             @endfor
         </select>
     </div>

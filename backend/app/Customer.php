@@ -142,4 +142,11 @@ class Customer extends Model
 
         return $suggests;
     }
+
+    public function explodeBirth()
+    {
+        list($registered_birth['year'], $registered_birth['month'], $registered_birth['day']) = explode("-", $this->birth);
+
+        $this->birth = $registered_birth;
+    }
 }

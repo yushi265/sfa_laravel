@@ -85,6 +85,9 @@ class CustomerController extends Controller
     {
         $genders = Gender::all();
         $jobs = Job::all();
+
+        $customer->explodeBirth();
+
         return view('customers.edit')
             ->with(['customer' => $customer, 'genders' => $genders, 'jobs' => $jobs]);
     }
