@@ -30,31 +30,17 @@ class CustomerController extends Controller
                 ->with(['genders' => $genders, 'jobs' => $jobs]);
     }
 
-    public function store(CustomerRequest $request)
+    public function store(CustomerRequest $request, Customer $customer)
     {
-        $customer = new Customer();
-        $customer->name = $request->name;
-        $customer->ruby = $request->ruby;
-        $customer->gender_id = $request->gender_id;
-        $customer->birth = $request->birth;
-        $customer->tel = $request->tel;
-        $customer->address = $request->address;
-        $customer->job_id = $request->job_id;
-        if(isset($request->mail))
-        {
-            $customer->mail = $request->mail;
-        }
-        if(isset($request->company))
-        {
-            $customer->company = $request->company;
-        }
+        $customer->fill($request->all());
         $customer->save();
+
         return redirect('/customers');
     }
 
     public function show(Customer $customer)
     {
-        $customer->age = Customer::getAge($customer->birth);
+        $customer->age = getAge($customer->birth);
 
         $query = Customer::query();
         $family_members = $query
@@ -94,16 +80,9 @@ class CustomerController extends Controller
 
     public function update(CustomerRequest $request, Customer $customer)
     {
-        $customer->name = $request->name;
-        $customer->ruby = $request->ruby;
-        $customer->gender_id = $request->gender_id;
-        $customer->birth = $request->birth;
-        $customer->tel = $request->tel;
-        $customer->address = $request->address;
-        $customer->mail = $request->mail;
-        $customer->job_id = $request->job_id;
-        $customer->company = $request->company;
+        $customer->fill($request->all());
         $customer->save();
+
         return redirect()->action('CustomerController@show', $customer);
     }
 
