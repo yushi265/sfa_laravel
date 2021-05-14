@@ -51,7 +51,7 @@ class Customer extends Model
     public static function setAllCustomersAge($customers)
     {
         foreach ($customers as $customer) {
-            $customer->age = self::getAge($customer->birth);
+            $customer->getAge();
         }
 
         return $customers;
@@ -62,9 +62,9 @@ class Customer extends Model
      * @param date $birth
      * @return int $age
      */
-    public static function getAge($birth)
+    public function getAge()
     {
-        $birthday = strtotime($birth);
+        $birthday = strtotime($this->birth);
 
         $birth_year = (int)date("Y", $birthday);
         $birth_month = (int)date("m", $birthday);
@@ -88,7 +88,7 @@ class Customer extends Model
             $age--;
         }
 
-        return $age;
+        return $this->age = $age;
     }
 
     /**

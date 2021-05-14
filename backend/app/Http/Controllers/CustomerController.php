@@ -32,6 +32,7 @@ class CustomerController extends Controller
 
     public function store(CustomerRequest $request, Customer $customer)
     {
+        $customer= new Customer();
         $customer->fill($request->all());
         $customer->save();
 
@@ -40,7 +41,7 @@ class CustomerController extends Controller
 
     public function show(Customer $customer)
     {
-        $customer->age = getAge($customer->birth);
+        $customer->getAge();
 
         $query = Customer::query();
         $family_members = $query
