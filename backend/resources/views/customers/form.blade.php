@@ -32,7 +32,16 @@
         <select class="form-select" name="gender_id" aria-label="Default select example">
             <option selected>選択してください</option>
             @foreach ($genders as $gender)
-                <option value="{{ $gender->gender_id }}" @if (old('gender_id') == $gender->gender_id) selected @endif>
+                <option value="{{ $gender->gender_id }}"
+                    @isset($customer)
+                        @if (old('gender_id', $customer->gender_id) == $gender->gender_id)
+                            selected
+                        @endif
+                    @else
+                        @if (old('gender_id') == $gender->gender_id)
+                            selected
+                        @endif
+                    @endisset>
                     {{ $gender->name }}</option>
             @endforeach
         </select>
@@ -61,8 +70,18 @@
         <select class="form-select" name="birth[year]" aria-label="Default select example">
             <option selected>年</option>
             @for ($i = config('customers_form.max_year'); $i > config('customers_form.min_year'); $i--)
-                <option value="{{ $i }}">
-                        {{ $i }}
+                <option value="{{ $i }}"
+                    @isset($customer)
+                        @if (old('birth.year', $customer->birth['year']) == $i)
+                            selected
+                        @endif
+                    @else
+                        @if (old('birth.year') == $i)
+                            selected
+                        @endif
+                    @endisset
+                >
+                    {{ $i }}
                 </option>
             @endfor
         </select>
@@ -71,7 +90,18 @@
         <select class="form-select" name="birth[month]" aria-label="Default select example">
             <option selected>月</option>
             @for ($i = config('customers_form.min_month'); $i <= config('customers_form.max_month'); $i++)
-                <option value="{{ $i }}">{{ $i }}</option>
+                <option value="{{ $i }}"
+                    @isset($customer)
+                        @if (old('birth.month', $customer->birth['month']) == $i)
+                            selected
+                        @endif
+                    @else
+                        @if (old('birth.month') == $i)
+                            selected
+                        @endif
+                    @endisset>
+                    {{ $i }}
+                </option>
             @endfor
         </select>
     </div>
@@ -79,7 +109,18 @@
         <select class="form-select" name="birth[day]" aria-label="Default select example">
             <option selected>日</option>
             @for ($i = config('customers_form.min_day'); $i <= config('customers_form.max_day'); $i++)
-                <option value="{{ $i }}">{{ $i }}</option>
+                <option value="{{ $i }}"
+                    @isset($customer)
+                        @if (old('birth.day', $customer->birth['day']) == $i)
+                            selected
+                        @endif
+                    @else
+                        @if (old('birth.day') == $i)
+                            selected
+                        @endif
+                    @endisset>
+                    {{ $i }}
+                </option>
             @endfor
         </select>
     </div>
@@ -119,7 +160,16 @@
         <select class="form-select" name="job_id" aria-label="Default select example">
             <option selected>選択してください</option>
             @foreach ($jobs as $job)
-                <option value="{{ $job->job_id }}" @if (old('job_id') == $job->job_id) selected @endif>
+                <option value="{{ $job->job_id }}"
+                    @isset($customer)
+                        @if (old('job_id', $customer->job_id) == $job->job_id)
+                            selected
+                        @endif
+                    @else
+                        @if (old('job_id') == $job->job_id )
+                            selected
+                        @endif
+                    @endisset>
                     {{ $job->name }}
                 </option>
             @endforeach
