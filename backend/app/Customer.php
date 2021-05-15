@@ -8,6 +8,7 @@ class Customer extends Model
 {
     protected $fillable = ['name', 'ruby', 'gender_id', 'birth', 'tel', 'address', 'mail', 'job_id', 'company'];
 
+    // リレーション
     public function progresses()
     {
         return $this->hasMany('App\Progress');
@@ -18,6 +19,17 @@ class Customer extends Model
         return $this->hasMany('App\Contract');
     }
 
+    public function gender()
+    {
+        return $this->hasOne('App\Gender', 'gender_id', 'gender_id');
+    }
+
+    public function job()
+    {
+        return $this->hasOne('App\Job', 'job_id', 'job_id');
+    }
+
+    // アクセサ
     public function getAmountOfOrdinaryAttribute()
     {
         return $this->contracts()->where('contract_type_id', '2')->sum('amount');
@@ -31,16 +43,6 @@ class Customer extends Model
     public function getAmountOfLoanAttribute()
     {
         return $this->contracts()->where('contract_type_id', '9')->sum('amount');
-    }
-
-    public function gender()
-    {
-        return $this->hasOne('App\Gender', 'gender_id', 'gender_id');
-    }
-
-    public function job()
-    {
-        return $this->hasOne('App\Job', 'job_id', 'job_id');
     }
 
     /**
@@ -146,5 +148,43 @@ class Customer extends Model
         list($registered_birth['year'], $registered_birth['month'], $registered_birth['day']) = explode("-", $this->birth);
 
         $this->birth = $registered_birth;
+    }
+
+    public static function setSearchQuery($request)
+    {
+        $search = $request->search;
+        $gender_opt = $request->gender_opt;
+        $job_opt = $request->job_opt;
+
+        $query = Customer::query();
+
+        if ($request->filled('gender_opt')) {
+            $query->where('gender_id', $gender_opt);
+        };
+
+        if ($request->filled('job_opt')) {
+            $query->where('job_id', $job_opt);
+        };
+
+        if ($request->filled('min_age')) {
+            $min_birth = date("Y-m-d", strtotime("-" . $request->min_age . " year"));
+            $query->where('birth', '<=', $min_birth);
+        }
+
+        if ($request->filled('max_age')) {
+            $max_birth = date("Y-m-d", strtotime("-" . $request->max_age + 1 . " year"));
+            $query->where('birth', '>', $max_birth);
+        }
+
+        $query->where(function ($query) use ($search) {
+            $query
+                ->where('name', 'like', '%' . $search . '%')
+                ->orWhere('ruby', 'like', '%' . $search . '%')
+                ->orWhere('tel', $search)
+                ->orWhere('address', 'like', '%' . $search . '%')
+                ->orWhere('company', 'like', '%' . $search . '%');
+        });
+
+        return $query;
     }
 }
