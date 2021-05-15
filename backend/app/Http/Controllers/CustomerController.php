@@ -17,7 +17,7 @@ class CustomerController extends Controller
 {
     public function index()
     {
-        $customers = DB::table('customers')->paginate(10);
+        $customers = Customer::orderBy('id', 'asc')->paginate(10);
         $customers = Customer::setAllCustomersAge($customers);
         return view('customers.index')->with('customers', $customers);
     }
@@ -43,8 +43,6 @@ class CustomerController extends Controller
     {
         $customer->getAge();
 
-        $customer->family_members->age = Customer::setAllCustomersAge($customer->family_members);
-
         $progresses = Progress::where('customer_id', $customer->id)
                                 ->latest()
                                 ->limit(5)
@@ -54,7 +52,6 @@ class CustomerController extends Controller
         return view('customers.show')
                 ->with([
                     'customer' => $customer,
-                    'family_members' => $customer->family_members,
                     'progresses' => $progresses,
                 ]);
     }

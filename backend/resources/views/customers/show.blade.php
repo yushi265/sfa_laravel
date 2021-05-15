@@ -94,7 +94,7 @@
             </tr>
         </tbody>
         <tbody>
-            @forelse ($family_members as $member)
+            @forelse ($customer->family_members as $member)
                 <tr>
                     <th scope="row" class="text-center">{{ $member->id }}</th>
                     <td>

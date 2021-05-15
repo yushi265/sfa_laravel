@@ -100,7 +100,9 @@ class Customer extends Model
             ->with('gender', 'job')
             ->get();
 
-        return $family_members;
+        Customer::setAllCustomersAge($family_members);
+
+        return $this->family_members = $family_members;
     }
 
     /**
