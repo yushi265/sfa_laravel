@@ -17,7 +17,7 @@ class CustomerController extends Controller
 {
     public function index()
     {
-        $customers = DB::table('customers')->paginate(10);
+        $customers = Customer::orderBy('id', 'asc')->paginate(10);
         $customers = Customer::setAllCustomersAge($customers);
         return view('customers.index')->with('customers', $customers);
     }
@@ -30,7 +30,7 @@ class CustomerController extends Controller
                 ->with(['genders' => $genders, 'jobs' => $jobs]);
     }
 
-    public function store(CustomerRequest $request, Customer $customer)
+    public function store(CustomerRequest $request)
     {
         $customer= new Customer();
         $customer->fill($request->all());
@@ -43,16 +43,6 @@ class CustomerController extends Controller
     {
         $customer->getAge();
 
-        $query = Customer::query();
-        $family_members = $query
-                            ->whereNotIn('id', [$customer->id])
-                            ->where('tel', $customer->tel)
-                            ->with('gender', 'job')
-                            ->get();
-        $family_members->age = Customer::setAllCustomersAge($family_members);
-
-        $suggests = Customer::getSuggests($customer, $family_members);
-
         $progresses = Progress::where('customer_id', $customer->id)
                                 ->latest()
                                 ->limit(5)
@@ -62,8 +52,6 @@ class CustomerController extends Controller
         return view('customers.show')
                 ->with([
                     'customer' => $customer,
-                    'family_members' => $family_members,
-                    'suggests' => $suggests,
                     'progresses' => $progresses,
                 ]);
     }

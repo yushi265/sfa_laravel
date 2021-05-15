@@ -51,7 +51,7 @@
                 @empty($suggests)
                 <li>提案はありません<br>積極的に情報収集をしましょう！</li>
                 @endempty
-                @foreach ($suggests as $suggest)
+                @foreach ($customer->suggests as $suggest)
                 <li>{{$suggest}}</li>
                 @endforeach
             </ul>
@@ -94,7 +94,7 @@
             </tr>
         </tbody>
         <tbody>
-            @forelse ($family_members as $member)
+            @forelse ($customer->family_members as $member)
                 <tr>
                     <th scope="row" class="text-center">{{ $member->id }}</th>
                     <td>
