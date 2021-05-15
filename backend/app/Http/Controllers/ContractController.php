@@ -42,15 +42,10 @@ class ContractController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(ContractRequest $request)
+    public function store(ContractRequest $request, Contract $contract)
     {
-        $contract = new Contract();
-        $contract->user_id = Auth::id();
-        $contract->customer_id = $request->customer_id;
-        $contract->contract_type_id = $request->contract_type_id;
-        $contract->amount = $request->amount;
-        $contract->due_date = $request->due_date;
-        $contract->save();
+        $contract->user_id = $request->user()->id;
+        $contract->fill($request->all())->save();
 
         return redirect('/contracts');
     }
@@ -87,10 +82,7 @@ class ContractController extends Controller
      */
     public function update(ContractRequest $request, Contract $contract)
     {
-        $contract->contract_type_id = $request->contract_type_id;
-        $contract->amount = $request->amount;
-        $contract->due_date = $request->due_date;
-        $contract->save();
+        $contract->fill($request->all())->save();
         return redirect('/contracts');
     }
 
