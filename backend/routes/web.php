@@ -63,7 +63,6 @@ Route::group(['middleware' => ['auth', 'can:user-higher']], function () {
 
     Route::prefix('contracts/')->group(function () {
         Route::get('', 'ContractController@index');
-        Route::get('', 'ContractController@search');
     });
 
     Route::get('/weathers', 'WeatherController@index');

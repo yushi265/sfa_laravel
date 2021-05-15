@@ -4,10 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Customer;
-use App\Progress;
 use App\Contract;
 use App\Contract_type;
-use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\ContractRequest;
 use App\Http\Requests\SearchRequest;
 
@@ -18,10 +16,20 @@ class ContractController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(SearchRequest $request)
     {
-        $contracts = Contract::latest()->paginate(10);
-        return view('contracts.index')->with('contracts', $contracts);
+        $contract_types = Contract_type::all();
+
+        $contracts = Contract::getSearchQuery($request)
+            ->with('contract_type', 'customer')
+            ->latest()
+            ->paginate(10);
+
+        return view('contracts.index')->with([
+            'contracts' => $contracts,
+            'request' => $request,
+            'contract_types' => $contract_types,
+        ]);
     }
 
     /**
@@ -33,7 +41,11 @@ class ContractController extends Controller
     {
         $customers = Customer::all();
         $contract_types = Contract_type::all();
-        return view('contracts.create')->with(['customers' => $customers, 'contract_types' => $contract_types]);
+
+        return view('contracts.create')->with([
+            'customers' => $customers,
+            'contract_types' => $contract_types
+        ]);
     }
 
     /**
@@ -70,7 +82,11 @@ class ContractController extends Controller
     public function edit(Contract $contract)
     {
         $contract_types = Contract_type::all();
-        return view('contracts.edit')->with(['contract' => $contract, 'contract_types' => $contract_types]);
+
+        return view('contracts.edit')->with([
+            'contract' => $contract,
+            'contract_types' => $contract_types
+        ]);
     }
 
     /**
@@ -83,6 +99,7 @@ class ContractController extends Controller
     public function update(ContractRequest $request, Contract $contract)
     {
         $contract->fill($request->all())->save();
+
         return redirect('/contracts');
     }
 
@@ -95,39 +112,8 @@ class ContractController extends Controller
     public function destroy(Contract $contract)
     {
         $contract->delete();
+
         return redirect('/contracts');
     }
 
-    public function search(SearchRequest $request)
-    {
-        $contract_types = Contract_type::all();
-
-        $query = Contract::query();
-        $search = $request->input('search');
-        $contract_type_id = $request->input('contract_type_id');
-
-        if ($request->filled('contract_type_id')) {
-            $query->where(function ($query) use ($contract_type_id) {
-                $query->where('contract_type_id', $contract_type_id);
-            });
-        }
-
-        if ($request->filled('search')) {
-            $query
-                ->whereHas('customer', function ($query) use ($search) {
-                    $query->where('name', 'like', '%' . $search . '%');
-                });
-        }
-
-        $contracts = $query
-            ->with('contract_type', 'customer')
-            ->latest()
-            ->paginate(10);
-
-        return view('contracts.index')->with([
-            'contracts' => $contracts,
-            'request' => $request,
-            'contract_types' => $contract_types,
-        ]);
-    }
 }

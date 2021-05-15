@@ -37,6 +37,28 @@ class Contract extends Model
 
         return $status;
     }
+
+    public static function getSearchQuery($request)
+    {
+        $query = Contract::query();
+        $search = $request->input('search');
+        $contract_type_id = $request->input('contract_type_id');
+
+        if ($request->filled('contract_type_id')) {
+            $query->where(function ($query) use ($contract_type_id) {
+                $query->where('contract_type_id', $contract_type_id);
+            });
+        }
+
+        if ($request->filled('search')) {
+            $query
+                ->whereHas('customer', function ($query) use ($search) {
+                    $query->where('name', 'like', '%' . $search . '%');
+                });
+        }
+
+        return $query;
+    }
 }
 
 

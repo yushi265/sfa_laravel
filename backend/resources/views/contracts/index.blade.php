@@ -9,7 +9,7 @@
         @endcan
     </h4>
 
-    <form action="{{ action('ContractController@search') }}" method="get">
+    <form action="{{ action('ContractController@index') }}" method="get">
         <div class="input-group mb-3 col-md-6">
             <input type="text" class="form-control" placeholder="キーワードを入力" name="search" aria-label="Recipient's username" aria-describedby="button-addon2" value="{{$request->input('search')}}">
             <select class="form-select col-md-4" name="contract_type_id" id="inputGroupSelect04" aria-label="Example select with button addon">
