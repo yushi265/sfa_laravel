@@ -118,7 +118,7 @@
 
     <br>
     <h4>活動記録(最新５件)</h4>
-    @forelse ($progresses as $progress)
+    @forelse ($customer->progresses as $progress)
         <div class="row">
         <div class="col-11">
             <table class="table table-bordered">

@@ -3,7 +3,6 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\DB;
 
 class Customer extends Model
 {
@@ -45,24 +44,11 @@ class Customer extends Model
     }
 
     /**
-     * すべての顧客情報を取得
-     * @return array $customers
-     */
-    public static function setAllCustomersAge($customers)
-    {
-        foreach ($customers as $customer) {
-            $customer->getAge();
-        }
-
-        return $customers;
-    }
-
-    /**
      * 現在の年齢を取得
      * @param date $birth
      * @return int $age
      */
-    public function getAge()
+    public function getAgeAttribute()
     {
         $birthday = strtotime($this->birth);
 
@@ -99,8 +85,6 @@ class Customer extends Model
             ->where('tel', $this->tel)
             ->with('gender', 'job')
             ->get();
-
-        Customer::setAllCustomersAge($family_members);
 
         return $this->family_members = $family_members;
     }

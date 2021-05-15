@@ -6,12 +6,8 @@ use Illuminate\Http\Request;
 use App\Http\Requests\CustomerRequest;
 use App\Http\Requests\SearchRequest;
 use App\Customer;
-use App\Progress;
-use App\Contract;
 use App\Gender;
 use App\Job;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Auth;
 
 class CustomerController extends Controller
 {
@@ -26,33 +22,26 @@ class CustomerController extends Controller
     {
         $genders = Gender::all();
         $jobs = Job::all();
-        return view('customers.create')
-                ->with(['genders' => $genders, 'jobs' => $jobs]);
+        return view('customers.create',[
+            'genders' => $genders,
+            'jobs' => $jobs,
+        ]);
     }
 
     public function store(CustomerRequest $request)
     {
         $customer= new Customer();
-        $customer->fill($request->all());
-        $customer->save();
+        $customer->fill($request->all())->save();
 
         return redirect('/customers');
     }
 
     public function show(Customer $customer)
     {
-        $customer->getAge();
+        $customer->load('progresses.customer', 'progresses.user');
 
-        $progresses = Progress::where('customer_id', $customer->id)
-                                ->latest()
-                                ->limit(5)
-                                ->get();
-        $progresses->load('customer', 'user');
-
-        return view('customers.show')
-                ->with([
+        return view('customers.show', [
                     'customer' => $customer,
-                    'progresses' => $progresses,
                 ]);
     }
 
@@ -69,8 +58,7 @@ class CustomerController extends Controller
 
     public function update(CustomerRequest $request, Customer $customer)
     {
-        $customer->fill($request->all());
-        $customer->save();
+        $customer->fill($request->all())->save();
 
         return redirect()->action('CustomerController@show', $customer);
     }
