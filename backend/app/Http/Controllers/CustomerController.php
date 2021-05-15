@@ -11,61 +11,7 @@ use App\Job;
 
 class CustomerController extends Controller
 {
-    public function index()
-    {
-        $customers = Customer::orderBy('id', 'asc')->paginate(10);
-        $customers = Customer::setAllCustomersAge($customers);
-        return view('customers.index')->with('customers', $customers);
-    }
-
-    public function create()
-    {
-        $genders = Gender::all();
-        $jobs = Job::all();
-        return view('customers.create',[
-            'genders' => $genders,
-            'jobs' => $jobs,
-        ]);
-    }
-
-    public function store(CustomerRequest $request)
-    {
-        $customer= new Customer();
-        $customer->fill($request->all())->save();
-
-        return redirect('/customers');
-    }
-
-    public function show(Customer $customer)
-    {
-        $customer->load('progresses.customer', 'progresses.user');
-
-        return view('customers.show', [
-                    'customer' => $customer,
-                ]);
-    }
-
-    public function edit(Customer $customer)
-    {
-        $genders = Gender::all();
-        $jobs = Job::all();
-
-        $customer->explodeBirth();
-
-        return view('customers.edit')
-            ->with(['customer' => $customer, 'genders' => $genders, 'jobs' => $jobs]);
-    }
-
-    public function update(CustomerRequest $request, Customer $customer)
-    {
-        $customer->fill($request->all())->save();
-
-        return redirect()->action('CustomerController@show', $customer);
-    }
-
-    public function delete() {}
-
-    public function search(SearchRequest $request)
+    public function index(SearchRequest $request)
     {
         $genders = Gender::all();
         $jobs = Job::all();
@@ -74,7 +20,6 @@ class CustomerController extends Controller
         $gender_opt = $request->gender_opt;
         $job_opt = $request->job_opt;
 
-        // ddd($job_opt);
         $query = Customer::query();
 
         if ($request->filled('gender_opt')) {
@@ -106,8 +51,6 @@ class CustomerController extends Controller
 
         $customers = $query->with('gender')->paginate(10);
 
-        $customers = Customer::setAllCustomersAge($customers);
-
         return view('customers.index')->with([
             'customers' => $customers,
             'request' => $request,
@@ -115,5 +58,55 @@ class CustomerController extends Controller
             'jobs' => $jobs
         ]);
     }
+
+    public function create()
+    {
+        $genders = Gender::all();
+        $jobs = Job::all();
+        return view('customers.create',[
+            'genders' => $genders,
+            'jobs' => $jobs,
+        ]);
+    }
+
+    public function store(CustomerRequest $request, Customer $customer)
+    {
+        $customer->fill($request->all())->save();
+
+        return redirect('/customers');
+    }
+
+    public function show(Customer $customer)
+    {
+        $customer->load('progresses.customer', 'progresses.user');
+
+        return view('customers.show', [
+                    'customer' => $customer,
+                ]);
+    }
+
+    public function edit(Customer $customer)
+    {
+        $genders = Gender::all();
+        $jobs = Job::all();
+
+        $customer->explodeBirth();
+
+        return view('customers.edit')
+            ->with([
+                'customer' => $customer,
+                'genders' => $genders,
+                'jobs' => $jobs,
+                ]);
+    }
+
+    public function update(CustomerRequest $request, Customer $customer)
+    {
+        $customer->fill($request->all())->save();
+
+        return redirect()->action('CustomerController@show', $customer);
+    }
+
+    public function delete() {}
 
 }

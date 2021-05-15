@@ -53,7 +53,6 @@ Route::group(['middleware' => ['auth', 'can:user-higher']], function () {
     Route::prefix('customers/')->group(function () {
         Route::get('', 'CustomerController@index');
         Route::get('{customer}', 'CustomerController@show');
-        Route::get('', 'CustomerController@search');
     });
 
     Route::prefix('progresses/')->group(function () {
