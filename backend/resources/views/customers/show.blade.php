@@ -51,7 +51,7 @@
                 @empty($suggests)
                 <li>提案はありません<br>積極的に情報収集をしましょう！</li>
                 @endempty
-                @foreach ($suggests as $suggest)
+                @foreach ($customer->suggests as $suggest)
                 <li>{{$suggest}}</li>
                 @endforeach
             </ul>

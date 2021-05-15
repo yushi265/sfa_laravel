@@ -30,7 +30,7 @@ class CustomerController extends Controller
                 ->with(['genders' => $genders, 'jobs' => $jobs]);
     }
 
-    public function store(CustomerRequest $request, Customer $customer)
+    public function store(CustomerRequest $request)
     {
         $customer= new Customer();
         $customer->fill($request->all());
@@ -43,15 +43,7 @@ class CustomerController extends Controller
     {
         $customer->getAge();
 
-        $query = Customer::query();
-        $family_members = $query
-                            ->whereNotIn('id', [$customer->id])
-                            ->where('tel', $customer->tel)
-                            ->with('gender', 'job')
-                            ->get();
-        $family_members->age = Customer::setAllCustomersAge($family_members);
-
-        $suggests = Customer::getSuggests($customer, $family_members);
+        $customer->family_members->age = Customer::setAllCustomersAge($customer->family_members);
 
         $progresses = Progress::where('customer_id', $customer->id)
                                 ->latest()
@@ -62,8 +54,7 @@ class CustomerController extends Controller
         return view('customers.show')
                 ->with([
                     'customer' => $customer,
-                    'family_members' => $family_members,
-                    'suggests' => $suggests,
+                    'family_members' => $customer->family_members,
                     'progresses' => $progresses,
                 ]);
     }

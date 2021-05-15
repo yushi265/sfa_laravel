@@ -91,48 +91,60 @@ class Customer extends Model
         return $this->age = $age;
     }
 
+    public function getFamilyMembersAttribute()
+    {
+        $query = $this->query();
+        $family_members = $query
+            ->whereNotIn('id', [$this->id])
+            ->where('tel', $this->tel)
+            ->with('gender', 'job')
+            ->get();
+
+        return $family_members;
+    }
+
     /**
      * 提案を取得する
      * @param int $age
      * @param array $deposit_status
      * @return array $suggests
      */
-    public static function getSuggests($customer, $family_members)
+    public function getSuggestsAttribute()
     {
         $suggests = [];
         // 年金
-        if ($customer->age >= 60 && $customer->age <= 65) {
+        if ($this->age >= 60 && $this->age <= 65) {
             $suggests[] = '年金が請求できる可能性があります。提案してみましょう！';
         }
         // 普通預金
-        if ($customer->amount_of_ordinary > 5000000) {
+        if ($this->amount_of_ordinary > 5000000) {
             $suggests[] = '普通預金に残高があります。定期預金を推進してみましょう！';
         }
-        if ($customer->amount_of_ordinary > 0 && $customer->amount_of_ordinary < 1000) {
+        if ($this->amount_of_ordinary > 0 && $this->amount_of_ordinary < 1000) {
             $suggests[] = '普通預金の残高が少なくなっています。フリーローンやカードローンを推進してみましょう！';
         }
         // 定期預金
-        if ($customer->amount_of_time > 10000000) {
+        if ($this->amount_of_time > 10000000) {
             $suggests[] = '大口預金先です。定期預金の満期管理に注意しましょう！';
         }
         // 融資
-        if ($customer->job_id == 4) {
+        if ($this->job_id == 4) {
             $suggests[] = '学生です。奨学ローンが必要な可能性があります。ご親族にお会いしたら提案してみましょう！';
         }
 
-        if ($customer->amount_of_loan > 500000) {
-            if ($customer->job_id == 3) {
+        if ($this->amount_of_loan > 500000) {
+            if ($this->job_id == 3) {
                 $suggests[] = '融資先です。業況を確認して、積極的に支援しましょう！';
             } else {
                 $suggests[] = '融資があります。';
             }
-        } elseif ($customer->amount_of_loan <= 500000 && $customer->amount_of_loan > 0) {
+        } elseif ($this->amount_of_loan <= 500000 && $this->amount_of_loan > 0) {
             $suggests[] = '融資残高が少なくなってきました。リファイナンスを提案しましょう！';
         }
 
         //家族に学生がいるとき、奨学ローンを推進（学生自身は除く）
-        if ($customer->job_id !== 4) {
-            foreach ($family_members as $member) {
+        if ($this->job_id !== 4) {
+            foreach ($this->family_members as $member) {
                 if ($member->job_id == 4) {
                     $suggests[] = '家族に学生がいます。奨学ローンを提案してみましょう。';
                     break;
@@ -140,7 +152,7 @@ class Customer extends Model
             }
         }
 
-        return $suggests;
+        return $this->suggests = $suggests;
     }
 
     public function explodeBirth()
