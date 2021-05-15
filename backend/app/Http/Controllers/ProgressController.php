@@ -17,10 +17,17 @@ class ProgressController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(SearchRequest $request)
     {
-        $progresses = Progress::with('customer', 'user')->latest()->paginate(10);
-        return view('progresses.index')->with(['progresses' => $progresses]);
+        $statuses = Status::all();
+
+        $progresses = Progress::getSearchQuery($request)->with('customer', 'user', 'status')->latest()->paginate(10);
+
+        return view('progresses.index')->with([
+            'progresses' => $progresses,
+            'request' => $request,
+            'statuses' => $statuses,
+        ]);
     }
 
     /**
@@ -96,41 +103,8 @@ class ProgressController extends Controller
     public function destroy(Progress $progress)
     {
         $progress->delete();
-        
+
         return redirect('/progresses');
     }
 
-    public function search(SearchRequest $request)
-    {
-        $statuses = Status::all();
-
-        $query = Progress::query();
-        $search = $request->input('search');
-        $status = $request->input('status');
-
-        if ($request->filled('status')) {
-            $query->where(function ($query) use ($status) {
-                    $query->where('status_id', $status );
-            });
-        }
-
-        if ($request->filled('search')) {
-            $query
-                ->where('body', 'like', '%' . $search . '%')
-                ->orWhereHas('user', function ($query) use ($search) {
-                    $query->where('name', 'like', '%' . $search . '%');
-                })
-                ->orWhereHas('customer', function ($query) use ($search) {
-                    $query->where('name', 'like', '%' . $search . '%');
-                });
-        }
-
-        $progresses = $query->with('customer', 'user', 'status')->latest()->paginate(10);
-
-        return view('progresses.index')->with([
-            'progresses' => $progresses,
-            'request' => $request,
-            'statuses' => $statuses,
-        ]);
-    }
 }

@@ -8,7 +8,7 @@
         <a class="btn btn-outline-primary" href="{{ action('ProgressController@create') }}" role="button">追加</a>
     </h4>
 
-    <form action="{{ action('ProgressController@search') }}" method="get">
+    <form action="{{ action('ProgressController@index') }}" method="get">
         <div class="input-group mb-3 col-md-6">
             <input type="text" class="form-control" placeholder="キーワードを入力" name="search" aria-label="Recipient's username" aria-describedby="button-addon2" value="{{$request->input('search')}}">
             <select class="form-select col-md-3" name="status" id="inputGroupSelect04" aria-label="Example select with button addon">

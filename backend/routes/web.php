@@ -59,7 +59,6 @@ Route::group(['middleware' => ['auth', 'can:user-higher']], function () {
         Route::get('', 'ProgressController@index');
         Route::get('create', 'ProgressController@create');
         Route::post('', 'ProgressController@store');
-        Route::get('', 'ProgressController@search');
     });
 
     Route::prefix('contracts/')->group(function () {
