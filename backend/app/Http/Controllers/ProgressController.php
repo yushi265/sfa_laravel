@@ -7,7 +7,6 @@ use App\Progress;
 use App\Customer;
 use App\Status;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use App\Http\Requests\ProgressRequest;
 use App\Http\Requests\SearchRequest;
 
@@ -20,9 +19,8 @@ class ProgressController extends Controller
      */
     public function index()
     {
-        $auth = Auth::user();
         $progresses = Progress::with('customer', 'user')->latest()->paginate(10);
-        return view('progresses.index')->with(['progresses' => $progresses, 'auth' => $auth]);
+        return view('progresses.index')->with(['progresses' => $progresses]);
     }
 
     /**
@@ -43,14 +41,11 @@ class ProgressController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(ProgressRequest $request, Customer $customer)
+    public function store(ProgressRequest $request, Progress $progress)
     {
-        $progress = new Progress();
-        $progress->user_id = Auth::id();
-        $progress->customer_id = $request->customer_id;
-        $progress->status_id = $request->status_id;
-        $progress->body = $request->body;
-        $progress->save();
+        $progress->user_id = $request->user()->id;
+        $progress->fill($request->all())->save();
+
         return redirect('/progresses');
     }
 
@@ -87,9 +82,8 @@ class ProgressController extends Controller
      */
     public function update(ProgressRequest $request, Progress $progress)
     {
-        $progress->status_id = $request->status_id;
-        $progress->body = $request->body;
-        $progress->save();
+        $progress->fill($request->all())->save();
+
         return redirect('/progresses');
     }
 
@@ -102,6 +96,7 @@ class ProgressController extends Controller
     public function destroy(Progress $progress)
     {
         $progress->delete();
+        
         return redirect('/progresses');
     }
 
