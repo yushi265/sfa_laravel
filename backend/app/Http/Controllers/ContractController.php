@@ -59,7 +59,7 @@ class ContractController extends Controller
         $contract->user_id = $request->user()->id;
         $contract->fill($request->all())->save();
 
-        return redirect('/contracts');
+        return redirect('/contracts')->with('message', '登録が完了しました。');
     }
 
     /**
@@ -100,7 +100,7 @@ class ContractController extends Controller
     {
         $contract->fill($request->all())->save();
 
-        return redirect('/contracts');
+        return redirect('/contracts')->with('message', '編集が完了しました。');
     }
 
     /**

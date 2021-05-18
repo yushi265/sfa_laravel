@@ -42,7 +42,7 @@ class CustomerController extends Controller
     {
         $customer->fill($request->all())->save();
 
-        return redirect('/customers');
+        return redirect('/customers')->with('message', '登録が完了しました。');
     }
 
     public function show(Customer $customer)
@@ -73,7 +73,7 @@ class CustomerController extends Controller
     {
         $customer->fill($request->all())->save();
 
-        return redirect()->action('CustomerController@show', $customer);
+        return redirect()->action('CustomerController@show', $customer)->with('message', '編集が完了しました。');
     }
 
     public function delete() {}

@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use App\Progress;
 use App\Customer;
 use App\Status;
-use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\ProgressRequest;
 use App\Http\Requests\SearchRequest;
 
@@ -53,7 +52,7 @@ class ProgressController extends Controller
         $progress->user_id = $request->user()->id;
         $progress->fill($request->all())->save();
 
-        return redirect('/progresses');
+        return redirect('/progresses')->with('message', '登録が完了しました。');
     }
 
     /**
@@ -91,7 +90,7 @@ class ProgressController extends Controller
     {
         $progress->fill($request->all())->save();
 
-        return redirect('/progresses');
+        return redirect('/progresses')->with('message', '編集が完了しました。');
     }
 
     /**

@@ -32,6 +32,6 @@ class UserController extends Controller
             $user->role_id = $request->input('user_admin_'.$user->id);
             $user->save();
         }
-        return redirect()->back();
+        return redirect()->back()->with('message', '変更が完了しました。');
     }
 }

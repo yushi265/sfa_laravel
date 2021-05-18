@@ -4,6 +4,12 @@
 
     <div class="container">
 
+        @if (session('message'))
+        <div class="alert alert-primary" role="alert">
+            {{ session('message') }}
+        </div>
+        @endif
+
         @include('customers.show.details', ['customer' => $customer])
 
         @include('customers.show.suggests', ['customer' => $customer])
@@ -14,8 +20,8 @@
 
         @include('customers.show.progresses', ['customer' => $customer])
 
-            <br><br>
-            <a href="{{ url('/customers') }}">←戻る</a>
-        </div>
+        <br><br>
+        <a href="{{ url('/customers') }}">←戻る</a>
+    </div>
 
-    @endsection
+@endsection
