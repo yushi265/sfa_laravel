@@ -19,21 +19,23 @@
                 <!-- Left Side Of Navbar -->
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ url('/customers') }}">顧客管理</a>
+                        <a class="nav-link
+                            @if (Request::path() === 'customers' ) active @endif" href="{{ url('/customers') }}">顧客管理</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ url('/progresses') }}">進捗管理</a>
+                        <a class="nav-link
+                            @if (Request::path() === 'progresses' ) active @endif" href="{{ url('/progresses') }}">進捗管理</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ url('/contracts') }}">成約情報</a>
+                        <a class="nav-link @if (Request::path() === 'contracts' ) active @endif" href="{{ url('/contracts') }}">成約情報</a>
                     </li>
                     @can('system-only')
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ url('/admin') }}">権限管理</a>
+                            <a class="nav-link @if (Request::path() === 'admin' ) active @endif" href="{{ url('/admin') }}">権限管理</a>
                         </li>
                     @endcan
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ url('/weathers') }}">天気予報</a>
+                        <a class="nav-link @if (Request::path()==='weathers' ) active @endif" href="{{ url('/weathers') }}">天気予報</a>
                     </li>
 
                     <li class="nav-item dropdown">
@@ -46,7 +48,7 @@
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                             <li>
                                 <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
-                                            document.getElementById('logout-form').submit();">
+                                                document.getElementById('logout-form').submit();">
                                     {{ __('ログアウト') }}
                                 </a>
                             </li>
