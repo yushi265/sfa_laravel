@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Job;
 
 class Customer extends Model
 {
@@ -100,10 +101,14 @@ class Customer extends Model
     public function getSuggestsAttribute()
     {
         $suggests = [];
+        $student_job = Job::where('name', '学生')->first();
+        $self_employed = Job::where('name', '自営業')->first();
+
         // 年金
         if ($this->age >= 60 && $this->age <= 65) {
             $suggests[] = '年金が請求できる可能性があります。提案してみましょう！';
         }
+
         // 普通預金
         if ($this->amount_of_ordinary > 5000000) {
             $suggests[] = '普通預金に残高があります。定期預金を推進してみましょう！';
@@ -111,17 +116,18 @@ class Customer extends Model
         if ($this->amount_of_ordinary > 0 && $this->amount_of_ordinary < 1000) {
             $suggests[] = '普通預金の残高が少なくなっています。フリーローンやカードローンを推進してみましょう！';
         }
+
         // 定期預金
         if ($this->amount_of_time > 10000000) {
             $suggests[] = '大口預金先です。定期預金の満期管理に注意しましょう！';
         }
+
         // 融資
-        if ($this->job_id == 4) {
+        if ($this->job_id == $student_job->id) {
             $suggests[] = '学生です。奨学ローンが必要な可能性があります。ご親族にお会いしたら提案してみましょう！';
         }
-
         if ($this->amount_of_loan > 500000) {
-            if ($this->job_id == 3) {
+            if ($this->job_id == $self_employed->id) {
                 $suggests[] = '融資先です。業況を確認して、積極的に支援しましょう！';
             } else {
                 $suggests[] = '融資があります。';
@@ -131,9 +137,9 @@ class Customer extends Model
         }
 
         //家族に学生がいるとき、奨学ローンを推進（学生自身は除く）
-        if ($this->job_id !== 4) {
+        if ($this->job_id !== $student_job->id) {
             foreach ($this->family_members as $member) {
-                if ($member->job_id == 4) {
+                if ($member->job_id == $student_job->id) {
                     $suggests[] = '家族に学生がいます。奨学ローンを提案してみましょう。';
                     break;
                 }
