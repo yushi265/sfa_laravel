@@ -20,22 +20,22 @@
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item">
                         <a class="nav-link
-                            @if (Request::path() === 'customers' ) active @endif" href="{{ url('/customers') }}">顧客管理</a>
+                            @if (Str::before(Request::path(), '/') === 'customers' ) active @endif" href="{{ url('/customers') }}">顧客管理</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link
-                            @if (Request::path() === 'progresses' ) active @endif" href="{{ url('/progresses') }}">進捗管理</a>
+                            @if (Str::before(Request::path(), '/') === 'progresses' ) active @endif" href="{{ url('/progresses') }}">進捗管理</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link @if (Request::path() === 'contracts' ) active @endif" href="{{ url('/contracts') }}">成約情報</a>
+                        <a class="nav-link @if (Str::before(Request::path(), '/') === 'contracts' ) active @endif" href="{{ url('/contracts') }}">成約情報</a>
                     </li>
                     @can('system-only')
                         <li class="nav-item">
-                            <a class="nav-link @if (Request::path() === 'admin' ) active @endif" href="{{ url('/admin') }}">権限管理</a>
+                            <a class="nav-link @if (Str::before(Request::path(), '/') === 'admin' ) active @endif" href="{{ url('/admin') }}">権限管理</a>
                         </li>
                     @endcan
                     <li class="nav-item">
-                        <a class="nav-link @if (Request::path()==='weathers' ) active @endif" href="{{ url('/weathers') }}">天気予報</a>
+                        <a class="nav-link @if (Str::before(Request::path(), '/')==='weathers' ) active @endif" href="{{ url('/weathers') }}">天気予報</a>
                     </li>
 
                     <li class="nav-item dropdown">
