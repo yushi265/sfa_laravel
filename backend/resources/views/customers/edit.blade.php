@@ -7,7 +7,7 @@
         <div class="card">
             <div class="card-body">
                 <h5 class="card-title mb-4 text-center">顧客編集フォーム</h5>
-                <form action="{{ action('CustomerController@update', $customer) }}" method="post">
+                <form action="{{ route('customers.update', $customer) }}" method="post">
                     @csrf
                     {{ method_field('patch') }}
                     @include('customers.form')
@@ -26,6 +26,6 @@
             </div>
         </div>
 
-        <a href="{{ url('/customers') }}">←戻る</a>
+        <a href="{{ route('customers.index') }}">←戻る</a>
 
     @endsection

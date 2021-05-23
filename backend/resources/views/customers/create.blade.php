@@ -10,7 +10,7 @@
   <div class="card-body">
     <h5 class="card-title mb-4 text-center">顧客登録フォーム</h5>
 
-    <form action="{{ url('/customers') }}" method="post" class="h-adr">
+    <form action="{{ route('customers.store') }}" method="post" class="h-adr">
         @csrf
         @include('customers.form')
         <button type="submit" class="btn btn-primary w-100 mt-3">登録</button>
@@ -28,6 +28,6 @@
 
 </div>
 </div>
-    <a href="{{ url('/customers') }}">←戻る</a>
+    <a href="{{ route('customers.index') }}">←戻る</a>
 
     @endsection

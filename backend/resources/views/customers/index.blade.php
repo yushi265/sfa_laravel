@@ -6,7 +6,7 @@
 
         <h4>顧客データベース</h4>
 
-        <form action="{{ url('/customers') }}" method="get">
+        <form action="{{ route('customers.index') }}" method="get">
             @include('customers.search_bar', ['request' => $request])
         </form>
 
@@ -28,7 +28,7 @@
         </div>
 
         @can('admin-higher')
-            <a class="btn btn-outline-primary" href="{{ action('CustomerController@create') }}" role="button">追加</a>
+            <a class="btn btn-outline-primary" href="{{ route('customers.create') }}" role="button">追加</a>
         @endcan
     </div>
 

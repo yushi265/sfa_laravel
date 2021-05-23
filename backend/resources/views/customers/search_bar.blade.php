@@ -10,7 +10,7 @@
                 詳細条件
             </button>
             <button class="btn btn-outline-primary" type="submit" id="button-addon2">検索</button>
-            <a href="{{ url('/customers') }}" type='button' class="btn btn-outline-secondary">リセット</a>
+            <a href="{{ route('customers.index') }}" type='button' class="btn btn-outline-secondary">リセット</a>
         </div>
     </div>
 </div>

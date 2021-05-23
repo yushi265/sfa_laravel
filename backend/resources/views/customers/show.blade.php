@@ -21,7 +21,7 @@
         @include('customers.show.progresses', ['customer' => $customer])
 
         <br><br>
-        <a href="{{ url('/customers') }}">←戻る</a>
+        <a href="{{ route('customers.index') }}">←戻る</a>
     </div>
 
 @endsection

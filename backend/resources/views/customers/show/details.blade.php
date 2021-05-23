@@ -9,7 +9,7 @@
             </div>
             <div class="col-sm-2">
                 @can('admin-higher')
-                    <a class="btn btn-outline-primary" href="{{ action('CustomerController@edit', $customer) }}"
+                    <a class="btn btn-outline-primary" href="{{ route('customers.edit', $customer) }}"
                         role="button">編集</a><br><br>
                 @endcan
             </div>
