@@ -62,7 +62,7 @@ class CustomerController extends Controller
         $customer = $this->CustomerService->update($request, $customer);
 
         return redirect()
-            ->route('customers.show', $customer)
+            ->route('customers.show', ['customer' => $customer])
             ->with('message', '編集が完了しました。');
     }
 

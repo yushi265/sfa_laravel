@@ -28,6 +28,8 @@ class CustomerService
 
     public function update(CustomerRequest $request, Customer $customer)
     {
-        return $this->CustomerDataAccess->update($request, $customer);
+        $this->CustomerDataAccess->update($request, $customer);
+
+        return $customer;
     }
 }

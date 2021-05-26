@@ -57,6 +57,8 @@ class CustomerDataAccessRepository implements  CustomerDataAccessRepositoryInter
 
     public function update(CustomerRequest $request, Customer $customer)
     {
-        return $customer->fill($request->all())->save();
+        $customer->fill($request->all())->save();
+
+        return $customer;
     }
 }
