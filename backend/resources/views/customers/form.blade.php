@@ -31,7 +31,7 @@
     <div class="col-sm-9">
         <select class="form-select" name="gender_id" aria-label="Default select example">
             <option selected>選択してください</option>
-            @foreach ($genders as $gender)
+            @foreach (App\Gender::all() as $gender)
                 <option value="{{ $gender->gender_id }}"
                     @isset($customer)
                         @if (old('gender_id', $customer->gender_id) == $gender->gender_id)
@@ -159,7 +159,7 @@
     <div class="col-sm-9">
         <select class="form-select" name="job_id" aria-label="Default select example">
             <option selected>選択してください</option>
-            @foreach ($jobs as $job)
+            @foreach (App\Job::all() as $job)
                 <option value="{{ $job->job_id }}"
                     @isset($customer)
                         @if (old('job_id', $customer->job_id) == $job->job_id)

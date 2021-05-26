@@ -21,7 +21,7 @@
                         <label class="input-group-text" for="gender_opt">性別</label>
                         <select class="form-select" name="gender_opt" id="gender_opt">
                             <option value="" selected>指定しない</option>
-                            @foreach ($genders as $gender)
+                            @foreach (App\Gender::all() as $gender)
                                 <option value="{{ $gender->gender_id }}" @if ($request->gender_opt == $gender->gender_id) selected @endif>
                                     {{ $gender->name }}
                                 </option>
@@ -32,7 +32,7 @@
                         <label class="input-group-text" for="job_opt">職業</label>
                         <select class="form-select" name="job_opt" id="job_opt">
                             <option value="">指定しない</option>
-                            @foreach ($jobs as $job)
+                            @foreach (App\Job::all() as $job)
                                 <option value="{{ $job->job_id }}" @if ($request->job_opt == $job->job_id) selected @endif>
                                     {{ $job->name }}
                                 </option>
