@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Repositories\CustomerDataAccessRepositoryInterface;
 use App\Http\Requests\SearchRequest;
+use App\Http\Requests\CustomerRequest;
 use App\Customer;
 
 class CustomerDataAccessRepository implements  CustomerDataAccessRepositoryInterface
@@ -46,5 +47,16 @@ class CustomerDataAccessRepository implements  CustomerDataAccessRepositoryInter
         $customers = $query->with('gender')->paginate(10);
 
         return $customers;
+    }
+
+    public function store(CustomerRequest $request)
+    {
+        $customer = new Customer();
+        $customer->fill($request->all())->save();
+    }
+
+    public function update(CustomerRequest $request, Customer $customer)
+    {
+        $customer->fill($request->all())->save();
     }
 }

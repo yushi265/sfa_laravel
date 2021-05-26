@@ -44,11 +44,13 @@ class CustomerController extends Controller
         ]);
     }
 
-    public function store(CustomerRequest $request, Customer $customer)
+    public function store(CustomerRequest $request)
     {
-        $customer->fill($request->all())->save();
+        $this->CustomerService->store($request);
 
-        return redirect('/customers')->with('message', '登録が完了しました。');
+        return redirect()
+                ->route('customers.index')
+                ->with('message', '登録が完了しました。');
     }
 
     public function show(Customer $customer)
@@ -77,9 +79,11 @@ class CustomerController extends Controller
 
     public function update(CustomerRequest $request, Customer $customer)
     {
-        $customer->fill($request->all())->save();
+        $this->CustomerService->update($request, $customer);
 
-        return redirect()->action('CustomerController@show', $customer)->with('message', '編集が完了しました。');
+        return redirect()
+            ->route('customer.show', $customer)
+            ->with('message', '編集が完了しました。');
     }
 
     public function delete() {}

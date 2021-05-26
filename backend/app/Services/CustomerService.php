@@ -4,6 +4,8 @@ namespace App\Services;
 
 use App\Repositories\CustomerDataAccessRepositoryInterface as CustomerDataAccess;
 use App\Http\Requests\SearchRequest;
+use App\Http\Requests\CustomerRequest;
+use App\Customer;
 
 class CustomerService
 {
@@ -17,5 +19,15 @@ class CustomerService
     public function search(SearchRequest $request)
     {
         return $this->CustomerDataAccess->search($request);
+    }
+
+    public function store(CustomerRequest $request)
+    {
+        $this->CustomerDataAccess->store($request);
+    }
+
+    public function update(CustomerRequest $request, Customer $customer)
+    {
+        $this->CustomerDataAccess->update($request, $customer);
     }
 }
