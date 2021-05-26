@@ -8,17 +8,23 @@ use App\Http\Requests\SearchRequest;
 use App\Customer;
 use App\Gender;
 use App\Job;
+use App\Services\CustomerService;
 
 class CustomerController extends Controller
 {
+    private $CustomerService;
+
+    public function __construct(CustomerService $CustomerService)
+    {
+        $this->CustomerService = $CustomerService;
+    }
+
     public function index(SearchRequest $request)
     {
         $genders = Gender::all();
         $jobs = Job::all();
 
-        $customers = Customer::setSearchQuery($request)
-                        ->with('gender')
-                        ->paginate(10);
+        $customers = $this->CustomerService->search($request);
 
         return view('customers.index')->with([
             'customers' => $customers,
