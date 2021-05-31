@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Http\Requests\ProgressRequest;
 use App\Repositories\ProgressDataAccessRepositoryInterface;
 use App\Http\Requests\SearchRequest;
 use App\Progress;
@@ -34,5 +35,21 @@ class ProgressDataAccessRepository implements ProgressDataAccessRepositoryInterf
         $progresses = $query->with('customer', 'user', 'status')->latest()->paginate(10);
 
         return $progresses;
+    }
+
+    public function store(ProgressRequest $request)
+    {
+        $progress = new Progress();
+        $progress->user_id = $request->user()->id;
+        $progress->fill($request->all())->save();
+
+        return $progress;
+    }
+
+    public function update(ProgressRequest $request, Progress $progress)
+    {
+        $progress->fill($request->all())->save();
+
+        return $progress;
     }
 }
