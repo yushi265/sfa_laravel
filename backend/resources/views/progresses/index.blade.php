@@ -22,7 +22,7 @@
                 <select class="form-select col-md-3" name="status" id="inputGroupSelect04"
                     aria-label="Example select with button addon">
                     <option value="">状態</option>
-                    @foreach ($statuses as $status)
+                    @foreach (App\Status::all() as $status)
                         <option value="{{ $status->status_id }}" @if ($request->status == $status->status_id) selected @endif>
                             {{ $status->name }}
                         </option>

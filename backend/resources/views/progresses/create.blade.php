@@ -20,7 +20,7 @@
                 <div class="form-floating mb-3">
                     <select class="form-select" name="status_id" id="status_id" aria-label="Floating label select example">
                         <option value="" selected>-</option>
-                        @foreach ($statuses as $status)
+                        @foreach (App\Status::all() as $status)
                             <option value="{{ $status->status_id }}" @if(old('status_id') == $status->status_id) selected @endif>
                                 {{ $status->name }}
                             </option>

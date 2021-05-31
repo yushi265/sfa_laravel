@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\ProgressService;
 use Illuminate\Http\Request;
 use App\Progress;
 use App\Customer;
@@ -11,6 +12,12 @@ use App\Http\Requests\SearchRequest;
 
 class ProgressController extends Controller
 {
+    private $ProgressService;
+
+    public function __construct(ProgressService $ProgressService)
+    {
+        return $this->ProgressService = $ProgressService;
+    }
     /**
      * Display a listing of the resource.
      *
@@ -18,14 +25,11 @@ class ProgressController extends Controller
      */
     public function index(SearchRequest $request)
     {
-        $statuses = Status::all();
-
-        $progresses = Progress::getSearchQuery($request)->with('customer', 'user', 'status')->latest()->paginate(10);
+        $progresses = $this->ProgressService->search($request);
 
         return view('progresses.index')->with([
             'progresses' => $progresses,
             'request' => $request,
-            'statuses' => $statuses,
         ]);
     }
 
@@ -37,8 +41,7 @@ class ProgressController extends Controller
     public function create()
     {
         $customers = Customer::all();
-        $statuses = Status::all();
-        return view('progresses.create')->with(['customers' => $customers, 'statuses' => $statuses]);
+        return view('progresses.create')->with(['customers' => $customers]);
     }
 
     /**
@@ -74,9 +77,7 @@ class ProgressController extends Controller
      */
     public function edit(Progress $progress)
     {
-        $statuses = Status::all();
-
-        return view('progresses.edit')->with(['progress' => $progress, 'statuses' => $statuses]);
+        return view('progresses.edit')->with(['progress' => $progress]);
     }
 
     /**

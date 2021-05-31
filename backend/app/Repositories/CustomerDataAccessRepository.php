@@ -7,7 +7,7 @@ use App\Http\Requests\SearchRequest;
 use App\Http\Requests\CustomerRequest;
 use App\Customer;
 
-class CustomerDataAccessRepository implements  CustomerDataAccessRepositoryInterface
+class CustomerDataAccessRepository implements CustomerDataAccessRepositoryInterface
 {
     public function search(SearchRequest $request)
     {
